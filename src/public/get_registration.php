@@ -27,6 +27,16 @@
             ?>  </label></p>
 
 
+        <label for="login"><b>Login</b></label>
+        <input type="text" placeholder="Enter Login" name="login" id="login" required>
+        <p><label style="color: darkred">
+                <?php
+                if (!empty($error['login'])) {
+                    print_r ($error['login']);
+                }
+                ?>  </label></p>
+
+
         <label for="password"><b>Password</b></label>
         <input type="password" placeholder="Enter Password" name="password" id="password" required>
         <p><label style="color: darkred">
