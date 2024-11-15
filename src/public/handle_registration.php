@@ -74,7 +74,7 @@ if (empty($error)) {
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt->execute(['name' => $name, 'email' => $email, 'password' => $password]);
+    $stmt->execute(['name' => $name, 'email' => $email, 'password' => $hash]);
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
     $stmt->execute(['email' => $email]);
