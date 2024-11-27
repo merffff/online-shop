@@ -13,7 +13,7 @@
 <body>
 <div class="container">
     <section id="content">
-        <form action="handle_login.php" method="POST">
+        <form action="/login" method="POST">
             <h1>Login Form</h1>
             <div>
                 <input type="text" name="login" placeholder="Login" required="" id="login" />
@@ -23,14 +23,11 @@
             </div>
             <div>
                 <input type="password" name="password" placeholder="Password" required="" id="password" />
-                <p><label style="color: darkred">
-                        <?php echo $error['password'] ?? ''; ?>
-                    </label></p>
-            </div>
+                            </div>
             <div>
                 <input type="submit" value="Log in" />
                 <a href="#">Lost your password?</a>
-                <a href="#">Register</a>
+                <a href="/registration">Register</a>
             </div>
         </form><!-- form -->
 

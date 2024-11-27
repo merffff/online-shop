@@ -1,56 +1,57 @@
 <?php
 
-$login = $_POST['login'];
-$password = $_POST['password'];
+function validateLoginForm(array $arrPost): array
+{
 
-$error=[];
+    $error = [];
 
-if (isset($_POST['login'])) {
-$login = $_POST['login'];
+    if (isset($arrPost['login'])) {
+        $login = $arrPost['login'];
 
-if (empty($login)) {
-    $error['login'] = 'логин не может быть пустым';
-} elseif (strlen($login) < 2) {
-    $error['login'] = 'логин не может содержать меньше двух символов';
-} elseif (is_numeric($login)) {
-    echo $error['login'] = 'логин не должен содержать только цифры';
-}
-} else {
-    $error['login'] = 'login is required';
-}
-
-if (isset($_POST['password'])) {
-    $password = $_POST['password'];
-
-    if (empty($password)) {
-        $error['password'] = 'пароль не может быть пустым';
-    } elseif (strlen($password) < 8) {
-        $error['password'] = 'пароль должен содержать не менее 8 символов';
-    } elseif (is_numeric($password)) {
-        $error['password'] = 'пароль не должен содержать только цифры';
+        if (empty($login)) {
+            $error['login'] = 'логин не может быть пустым';
+        }
+    } else {
+        $error['login'] = 'login is required';
     }
-} else {
-    $error['password'] = 'password is required';
+
+    if (isset($arrPost['password'])) {
+        $password = $arrPost['password'];
+
+        if (empty($password)) {
+            $error['password'] = 'пароль не может быть пустым';
+        }
+    } else {
+        $error['password'] = 'password is required';
+    }
+
+    return $error;
 }
+
+$error = validateLoginForm($_POST);
 
 if (empty($error)) {
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+
     $pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE login = :login");
-
     $stmt->execute(['login' => $login]);
-
     $data = $stmt->fetch();
 
     if ($data === false) {
-        $error['login'] = 'не существует пользователя с указанным логином';
+        $error['login'] = 'логин или пароль указаны неверно';
     } else {
         $passwordFromDb = $data['password'];
 
         if (password_verify($password, $passwordFromDb)) {
-            echo 'ok!';
+           // setcookie('user_id', $data['id']);
+            session_start();
+            $_SESSION['user_id'] = $data['id'];
+            header("Location: /catalog");
         } else {
-            $error ['password'] = 'неверный пароль';
+            $error ['login'] = 'логин или пароль указаны неверно';
         }
     }
 }
