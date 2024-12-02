@@ -1,41 +1,23 @@
-<?php
-session_start();
-
-if(!isset($_SESSION['user_id'])) {
-    header("Location: /login");
-}
-
-$pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
-
-$stmt = $pdo->query("SELECT * FROM products");
-$products = $stmt->fetchAll();
-
-
-
-?>
-
-
-
 <article class="catalog">
     <div class="container-mix  catalog__list">
 
         <div class="catalog__product  mix  cheap">
             <?php foreach ($products as $product): ?>
-            <a class="catalog__product-img" href="/">
-                <img src="<?php echo $product['image'];?>" width="330" alt="">
-            </a>
+                <a class="catalog__product-img" href="/">
+                    <img src="<?php echo $product['image'];?>" width="330" alt="">
+                </a>
 
-            <div class="catalog__product-body">
-                <h2 class="catalog__product-title"><?php echo $product['category'];?>
-                    <a href="/"><?php echo $product['nameproduct'];?></a></h2>
+                <div class="catalog__product-body">
+                    <h2 class="catalog__product-title"><?php echo $product['category'];?>
+                        <a href="/"><?php echo $product['nameproduct'];?></a></h2>
 
 
-            </div>
+                </div>
 
-            <div class="catalog__product-offer">
-                <p class="catalog__product-price"><?php echo $product['price'];?></p>
-                <a href="/add-product">Добавить в корзину</a>
-            </div>
+                <div class="catalog__product-offer">
+                    <p class="catalog__product-price"><?php echo $product['price'];?></p>
+                    <a href="/add-product">Добавить в корзину</a>
+                </div>
             <?php endforeach;?>
         </div>
 
@@ -285,4 +267,5 @@ $products = $stmt->fetchAll();
     }
 
 </style>
+
 

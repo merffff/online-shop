@@ -8,23 +8,23 @@
         <label for="name"><b>Name</b></label>
         <input type="text" placeholder="Enter Name" name="name" id="name" required>
         <p><label style="color: darkred">
-            <?php
-            if (!empty($error['name'])) {
-                print_r ($error['name']);
-            }
-            ?>
-        </label></p>
+                <?php
+                if (!empty($error['name'])) {
+                    print_r ($error['name']);
+                }
+                ?>
+            </label></p>
 
 
 
         <label for="email"><b>Email</b></label>
         <input type="text" placeholder="Enter Email" name="email" id="email" required>
         <p><label style="color: darkred">
-            <?php
-            if (!empty($error['email'])) {
-                print_r ($error['email']);
-            }
-            ?>  </label></p>
+                <?php
+                if (!empty($error['email'])) {
+                    print_r ($error['email']);
+                }
+                ?>  </label></p>
 
 
         <label for="login"><b>Login</b></label>
@@ -40,22 +40,22 @@
         <label for="password"><b>Password</b></label>
         <input type="password" placeholder="Enter Password" name="password" id="password" required>
         <p><label style="color: darkred">
-            <?php
-            if (!empty($error['password'])) {
-                print_r ($error['password']);
-            }
-            ?>  </label></p>
+                <?php
+                if (!empty($error['password'])) {
+                    print_r ($error['password']);
+                }
+                ?>  </label></p>
 
 
         <label for="passwordRep"><b>Repeat Password</b></label>
         <input type="password" placeholder="Repeat Password" name="passwordRep" id="passwordRep" required>
         <p><label style="color: darkred">
-            <?php
-            if (!empty($error['passwordRep'])) {
-                print_r ($error['passwordRep']);
-            }
-            ?>
-        </label></p>
+                <?php
+                if (!empty($error['passwordRep'])) {
+                    print_r ($error['passwordRep']);
+                }
+                ?>
+            </label></p>
 
         <hr>
 
@@ -64,7 +64,7 @@
     </div>
 
     <div class="container signin">
-        <p>Already have an account? <a href="#">Sign in</a>.</p>
+        <p>Already have an account? <a href="/login">Log in</a>.</p>
     </div>
 </form>
 
@@ -124,4 +124,5 @@
         text-align: center;
     }
 </style>
+
 

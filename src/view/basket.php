@@ -1,24 +1,3 @@
-<?php
-session_start();
-
-if(!isset($_SESSION['user_id'])) {
-    header("Location: /login");
-} else {
-    $user_id = $_SESSION['user_id'];
-
-    $pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
-
-    $stmt = $pdo->prepare("SELECT amount, nameproduct, price, image FROM products JOIN user_products ON user_products.product_id = products.id WHERE user_id = :user_id");
-    $stmt ->execute(['user_id' => $user_id]);
-    $userProducts = $stmt->fetchAll();
-
-
-}
-
-?>
-
-
-
 <h1>Ваша Корзина</h1>
 
 <div class="shopping-cart">
@@ -33,26 +12,26 @@ if(!isset($_SESSION['user_id'])) {
     </div>
     <?php $total=0;
     foreach ($userProducts as $product) :?>
-    <div class="product">
-        <div class="product-image">
-            <img src="<?php echo $product['image'] ?>">
-        </div>
-        <div class="product-details">
-            <div class="product-title"><?php echo $product['nameproduct']?></div>
+        <div class="product">
+            <div class="product-image">
+                <img src="<?php echo $product['image'] ?>">
+            </div>
+            <div class="product-details">
+                <div class="product-title"><?php echo $product['nameproduct']?></div>
 
-        </div>
-        <div class="product-price"><?php echo $product['price']?></div>
-        <div class="product-quantity">
-            <?php echo $product['amount']?>
-        </div>
+            </div>
+            <div class="product-price"><?php echo $product['price']?></div>
+            <div class="product-quantity">
+                <?php echo $product['amount']?>
+            </div>
 
 
-        <div class="product-line-price"><?php
-            $sum = $product['amount']*$product['price'];
-            $total = $total+$sum;
-            echo $sum ?>
+            <div class="product-line-price"><?php
+                $sum = $product['amount']*$product['price'];
+                $total = $total+$sum;
+                echo $sum ?>
+            </div>
         </div>
-    </div>
     <?php endforeach;?>
 
 
