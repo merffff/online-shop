@@ -1,5 +1,5 @@
 <?php
-
+require_once './../Controller/OrderController.php';
 require_once './../Controller/UserController.php';
 require_once './../Controller/ProductController.php';
 require_once './../Controller/BasketController.php';
@@ -56,6 +56,26 @@ if($requestUri === '/login') {
         $BasketController = new BasketController();
         $BasketController->getBasket();
     } else {
+        echo "$requestMethod не поддерживается адресом $requestUri";
+    }
+}elseif ($requestUri === '/order') {
+    if ($requestMethod === 'GET') {
+        $OrderController = new OrderController();
+        $OrderController->getOrder();
+    } elseif ($requestMethod === 'POST') {
+      $OrderController = new OrderController();
+      $OrderController->handleOrder();
+    }
+    else {
+        echo "$requestMethod не поддерживается адресом $requestUri";
+    }
+
+}elseif ($requestUri === '/completedOrder') {
+    if($requestMethod === 'GET') {
+        $OrderController = new OrderController();
+        $OrderController->completedOrder();
+    }
+    else {
         echo "$requestMethod не поддерживается адресом $requestUri";
     }
 }

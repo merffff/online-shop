@@ -1,7 +1,14 @@
 <?php
-
+require_once './../model/User.php';
 class UserController
 {
+
+    private User $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = new User();
+    }
 
 
 
@@ -21,13 +28,11 @@ class UserController
             $passwordRep = $_POST['passwordRep'];
             $hash = password_hash($password, PASSWORD_DEFAULT);
 
-            require_once './../model/User.php';
-            $user = new User();
-            $user->create($name, $email, $login, $hash);
+            $this->userModel->create($name, $email, $login, $hash);
 
             header("Location: /login");
 
-            //print_r($stmt->fetch());
+
         } else {
 
             require_once './../view/registrate.php';
@@ -63,9 +68,7 @@ class UserController
                 $error['email'] = 'email указан неверно';
             } else {
 
-                require_once './../model/User.php';
-                $user = new User();
-                $data = $user->getByEmail($email);
+                $data = $this->userModel->getByEmail($email);
 
                 if ($data !== false) {
                     $error['email'] = 'пользователь с указанной почтой существует';
@@ -134,9 +137,7 @@ class UserController
             $login = $_POST['login'];
             $password = $_POST['password'];
 
-            require_once './../model/User.php';
-            $user = new User();
-            $data = $user->getByLogin($login);
+            $data = $this->userModel->getByLogin($login);
 
             if ($data === false) {
                 $error['login'] = 'логин или пароль указаны неверно';

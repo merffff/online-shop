@@ -11,7 +11,7 @@
         <label class="product-line-price">Итого:</label>
     </div>
     <?php $total=0;
-    foreach ($userProducts as $product) :?>
+    foreach ($products as $product) :?>
         <div class="product">
             <div class="product-image">
                 <img src="<?php echo $product['image'] ?>">
@@ -44,6 +44,8 @@
         </div>
 
     </div>
+
+    <a href="/order">Оформить заказ</a>
 
     <a href="/catalog">Вернуться к катологу</a>
 

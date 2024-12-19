@@ -1,9 +1,19 @@
 <?php
 
+require_once './../model/UserProduct.php';
+require_once './../model/Product.php';
 
 
 class BasketController
 {
+    private UserProduct $userProductModel;
+    private Product $productModel;
+
+    public function __construct()
+    {
+        $this->productModel = new Product();
+        $this->userProductModel = new UserProduct();
+    }
 
     public function getAddProduct()
     {
@@ -31,26 +41,19 @@ class BasketController
             $product_id = $_POST['product_id'];
             $amount = $_POST['amount'];
 
-            require_once './../model/UserProduct.php';
-            $data = new UserProduct();
-            $productIsset = $data->getByProductIdAndUserId($product_id, $user_id);
+            $productIsset = $this->userProductModel->getByProductIdAndUserId($product_id, $user_id);
 
             if ($productIsset === false) {
-                $data =new UserProduct();
-                $data->create($user_id, $product_id, $amount);
+                $this->userProductModel->create($user_id, $product_id, $amount);
             } else {
-                $data = new UserProduct();
-                $data->update($user_id,$product_id,$amount);
+                $this->userProductModel->update($user_id,$product_id,$amount);
             }
-
-
 
 
             header("Location: /basket");
             exit;
         } else {
-
-            require_once './get_add_product.php';
+            require_once './../view/addProduct.php';
         }
 
     }
@@ -69,9 +72,7 @@ class BasketController
             }elseif ($product_id<1) {
                 $error['product_id'] = 'id должно быть положительным числом';
             }else {
-                require_once './../model/UserProduct.php';
-                $data = new UserProduct;
-                $res = $data->getById($product_id);
+                $res = $this->productModel->getById($product_id);
 
                 if ($res === false) {
                     $error['product_id'] = 'продукта с указанным id не существует';
@@ -110,11 +111,20 @@ class BasketController
         } else {
             $user_id = $_SESSION['user_id'];
 
-            $pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
+            $userProducts = $this->userProductModel->getByUserId($user_id);
 
-            $stmt = $pdo->prepare("SELECT amount, nameproduct, price, image FROM products JOIN user_products ON user_products.product_id = products.id WHERE user_id = :user_id");
-            $stmt->execute(['user_id' => $user_id]);
-            $userProducts = $stmt->fetchAll();
+            $products =[];
+
+            foreach ($userProducts as $userProduct) {
+                $productId = $userProduct['product_id'];
+                $product = $this->productModel->getById($productId);
+                $product['amount'] = $userProduct['amount'];
+                $products[] =$product;
+            }
+
+            //$userProducts = $this->productModel->getByUserIdDataBasket($user_id);
+
+
 
 
         }

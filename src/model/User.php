@@ -32,5 +32,14 @@ class User
         return $data;
     }
 
+    public function getEmailById(int $id): array
+    {
+        $pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
+        $stmt = $pdo->prepare("SELECT email FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $data = $stmt->fetch();
+        return $data;
+    }
+
 
 }
