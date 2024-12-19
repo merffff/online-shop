@@ -26,11 +26,7 @@ class OrderController
 
     public function getOrder()
     {
-        session_start();
-
-        if(!isset($_SESSION['user_id'])) {
-            header("Location: /login");
-        }
+        $this->checkSession();
 
         $user_id = $_SESSION['user_id'];
 
@@ -70,11 +66,7 @@ class OrderController
 
         if (empty($error)) {
 
-            session_start();
-
-            if(!isset($_SESSION['user_id'])) {
-                header("Location: /login");
-            }
+            $this->checkSession();
 
             $user_id = $_SESSION['user_id'];
             $number = $_POST['number'];
@@ -164,11 +156,7 @@ class OrderController
     public function completedOrder()
     {
 
-        session_start();
-
-        if(!isset($_SESSION['user_id'])) {
-            header("Location: /login");
-        }
+        $this->checkSession();
 
         $user_id = $_SESSION['user_id'];
 
@@ -278,9 +266,15 @@ class OrderController
         return $error;
 
 
+    }
 
+    private function checkSession():void
+    {
+        session_start();
 
-
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: /login");
+        }
     }
 
 }

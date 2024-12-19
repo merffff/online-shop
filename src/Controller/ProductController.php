@@ -14,14 +14,19 @@ class ProductController
 
     public function getCatalog()
     {
-        session_start();
-
-        if(!isset($_SESSION['user_id'])) {
-            header("Location: /login");
-        }
+       $this->checkSession();
 
         $products = $this->productModel->getProducts();
 
         require_once './../view/catalog.php';
+    }
+
+    private function checkSession():void
+    {
+        session_start();
+
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: /login");
+        }
     }
 }

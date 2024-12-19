@@ -1,20 +1,20 @@
 <?php
 
-class Product
+require_once './Model.php';
+
+class Product extends Model
 {
     public function getProducts()
     {
-        $pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
 
-        $stmt = $pdo->query("SELECT * FROM products");
+        $stmt = $this->pdo->query("SELECT * FROM products");
         $products = $stmt->fetchAll();
         return $products;
     }
 
     public function getById(int $product_id): array|false
     {
-        $pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
-        $stmt = $pdo->prepare("SELECT * FROM products WHERE id = :id");
+        $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id = :id");
         $stmt->execute(['id' => $product_id]);
         return $stmt->fetch();
 
