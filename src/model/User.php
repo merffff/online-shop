@@ -1,7 +1,6 @@
 <?php
 
-require_once './Model.php';
-
+namespace model;
 
 class User extends Model
 {
@@ -23,8 +22,8 @@ class User extends Model
 
     public function getByEmail(string $email): array|false
     {
-        $pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $data = $stmt->fetch();
         return $data;
@@ -32,8 +31,8 @@ class User extends Model
 
     public function getEmailById(int $id): array
     {
-        $pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
-        $stmt = $pdo->prepare("SELECT email FROM users WHERE id = :id");
+
+        $stmt = $this->pdo->prepare("SELECT email FROM users WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch();
         return $data;

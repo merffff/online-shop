@@ -1,5 +1,6 @@
 <?php
-require_once './Model.php';
+
+namespace model;
 class UserProduct extends Model
 {
 

@@ -1,10 +1,14 @@
 <?php
-require_once './../model/UserAddress.php';
-require_once './../model/User.php';
-require_once './../model/Product.php';
-require_once './../model/OrderProduct.php';
-require_once './../model/UserProduct.php';
-require_once './../model/Order.php';
+
+namespace Controller;
+use model\UserProduct;
+use model\Product;
+use model\User;
+use model\UserAddress;
+use model\Order;
+use model\OrderProduct;
+
+
 class OrderController
 {
     private UserProduct $userProductModel;

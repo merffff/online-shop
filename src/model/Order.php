@@ -1,6 +1,6 @@
 <?php
 
-require_once './Model.php';
+namespace model;
 class Order extends Model
 {
     public function createOrder(int $user_id, int $address_id, int $number, float $total )

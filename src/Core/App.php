@@ -1,9 +1,12 @@
 <?php
-require_once './../Controller/OrderController.php';
-require_once './../Controller/UserController.php';
-require_once './../Controller/ProductController.php';
-require_once './../Controller/BasketController.php';
 
+namespace Core;
+
+
+use Controller\BasketController;
+use Controller\OrderController;
+use Controller\ProductController;
+use Controller\UserController;
 
 class App
 {
@@ -11,65 +14,65 @@ class App
     private array $routes = [
         '/registration'=>[
             'GET'=>[
-                'class'=>'UserController',
-                'method'=>'getRegistrationForm',
+                'class'=>UserController::class,
+                'method'=>'getRegistrateForm',
             ],
             'POST'=>[
-                'class'=>'UserController',
+                'class'=>UserController::class,
                 'method'=>'registrate',
             ]
         ],
         '/login'=>[
             'GET'=>[
-                'class'=>'UserController',
+                'class'=>UserController::class,
                 'method'=>'getLoginForm',
             ],
             'POST'=>[
-                'class'=>'UserController',
+                'class'=>UserController::class,
                 'method'=>'login',
             ]
         ],
         '/catalog'=>[
             'GET'=>[
-                'class'=>'ProductController',
+                'class'=>ProductController::class,
                 'method'=>'getCatalog',
             ],
         ],
         '/add-product'=>[
             'GET'=>[
-                'class'=>'BasketController',
+                'class'=>BasketController::class,
                 'method'=>'getAddProduct',
             ],
             'POST'=>[
-                'class'=>'BasketController',
+                'class'=>BasketController::class,
                 'method'=>'addProduct',
             ]
         ],
         '/logout'=>[
             'GET'=>[
-                'class'=>'UserController',
+                'class'=>UserController::class,
                 'method'=>'logout',
             ],
         ],
         '/basket'=>[
             'GET'=>[
-                'class'=>'BasketController',
+                'class'=>BasketController::class,
                 'method'=>'getBasket',
             ],
         ],
         '/order'=>[
             'GET'=>[
-                'class'=>'OrderController',
+                'class'=>OrderController::class,
                 'method'=>'getOrder',
             ],
             'POST'=>[
-                'class'=>'OrderController',
+                'class'=>OrderController::class,
                 'method'=>'handleOrder',
             ]
         ],
         '/completedOrder'=>[
             'GET'=>[
-                'class'=>'OrderController',
+                'class'=>OrderController::class,
                 'method'=>'completedOrder',
             ],
         ],

@@ -1,7 +1,8 @@
 <?php
 
-require_once './../model/UserProduct.php';
-require_once './../model/Product.php';
+namespace Controller;
+use model\UserProduct;
+use model\Product;
 
 
 class BasketController
@@ -99,7 +100,6 @@ class BasketController
     {
         $this->checkSession();
 
-        session_start();
 
 
         $user_id = $_SESSION['user_id'];

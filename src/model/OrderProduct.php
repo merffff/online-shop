@@ -1,7 +1,6 @@
 <?php
 
-require_once './Model.php';
-
+namespace model;
 class OrderProduct extends Model
 {
 

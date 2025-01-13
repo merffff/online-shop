@@ -1,7 +1,7 @@
 <?php
 
-require_once './../model/Product.php';
-
+namespace Controller;
+use model\Product;
 
 class ProductController
 {
