@@ -272,6 +272,103 @@ class OrderController
 
     }
 
+    public function getOrders()
+    {
+        $this->checkSession();
+
+        $user_id = $_SESSION['user_id'];
+        $userOrders = $this->orderModel->getAllByUserId($user_id);
+
+        $orderIds = [];
+        foreach ($userOrders as $userOrder) {
+            $orderIds[]= $userOrder ['id'];
+        }
+
+
+
+        $orderProducts = $this->orderProductModel->getAllByOrderId($orderIds);
+
+
+
+
+        foreach ($orderProducts as $orderProduct) {
+
+            foreach ($userOrders as &$userOrder) {
+                if ($userOrder['id'] === $orderProduct['order_id']) {
+                   $userOrder['product_id'] = $orderProduct['product_id'];
+                   $userOrder['amount'] = $orderProduct ['amount'];
+                   $userOrder['price'] = $orderProduct ['price'];
+                    if ($userOrder['total'] >= 250000) {
+                        $userOrder['delivery'] = 0;
+                    } else {
+                        $userOrder['delivery'] = 500;
+                    }
+
+                    $userOrder['subtotal'] = $userOrder['delivery']+$userOrder['total'];
+                }
+            }
+            unset($userOrder);
+        }
+
+
+
+        $productIds = [];
+        foreach ($userOrders as $userOrder) {
+            $productIds[] = $userOrder['product_id'];
+        }
+
+
+        $products = $this->productModel->getAllByIds($productIds);
+
+
+        foreach ($products as $product) {
+
+            foreach ($userOrders as &$userOrder) {
+                if ($userOrder['product_id'] === $product['id']) {
+                    $userOrder['nameproduct'] = $product['nameproduct'];
+                    $userOrder['category'] = $product ['category'];
+                    $userOrder['image'] = $product ['image'];
+                }
+            }
+            unset($userOrder);
+        }
+
+        $addressIds = [];
+        foreach ($userOrders as $userOrder) {
+            $addressIds[] = $userOrder['address_id'];
+        }
+
+
+
+
+
+        $addresses = $this->userAddressModel->getAddressesByIds($addressIds);
+
+
+
+        foreach ($addresses as $address) {
+
+            foreach ($userOrders as &$userOrder) {
+                if ($userOrder['address_id'] === $address['id']) {
+                    $userOrder['country'] = $address['country'];
+                    $userOrder['city'] = $address ['city'];
+                    $userOrder['street'] = $address ['street'];
+                    $userOrder['building'] = $address ['building'];
+                }
+            }
+            unset($userOrder);
+        }
+
+
+
+
+
+
+
+        require_once './../view/orders.php';
+
+    }
+
     private function checkSession():void
     {
         session_start();

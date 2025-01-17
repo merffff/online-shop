@@ -76,6 +76,12 @@ class App
                 'method'=>'completedOrder',
             ],
         ],
+        '/orders'=>[
+            'GET'=>[
+                'class'=>OrderController::class,
+                'method'=>'getOrders',
+            ]
+        ]
     ];
     public function run()
     {

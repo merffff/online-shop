@@ -20,4 +20,12 @@ class Order extends Model
         return $stmt->fetch();
     }
 
+    public function getAllByUserId(int $user_id): array|false
+    {
+
+        $stmt = $this->pdo->prepare("SELECT * FROM orders WHERE user_id = :user_id");
+        $stmt->execute(['user_id' => $user_id]);
+        return $stmt->fetchAll();
+    }
+
 }

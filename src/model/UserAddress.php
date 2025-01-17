@@ -20,4 +20,14 @@ class UserAddress extends Model
         $data = $stmt->fetch();
         return $data;
     }
+
+    public function getAddressesByIds($address_id): array|false
+    {
+        $place_holders = '?' . str_repeat(', ?',count($address_id) - 1);
+        $stmt = $this->pdo->prepare("SELECT * FROM user_addresses WHERE id IN ($place_holders)");
+        $stmt->execute($address_id);
+        return $stmt->fetchAll();
+
+
+    }
 }

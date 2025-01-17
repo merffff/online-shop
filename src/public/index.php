@@ -1,6 +1,8 @@
 <?php
+require_once './../Core/Autoload.php';
 
 use Core\App;
+use Core\Autoload;
 
 //$autoloadCore = function (string $className) {
 //    $path = "./../Core/$className.php";
@@ -33,17 +35,9 @@ use Core\App;
 //spl_autoload_register($autoloadController);
 //spl_autoload_register($autoloadModel);
 
-$autoload =  function ($className) {
-    $handlerPath = str_replace('\\','/', $className);
-    $path = "./../$handlerPath.php";
-    if (file_exists($path)) {
-        require_once $path;
-        return true;
-    }
-    return false;
-};
 
-spl_autoload_register($autoload);
+Autoload::registrate(dirname(__DIR__));
+
 
 
 
