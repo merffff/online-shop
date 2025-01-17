@@ -11,79 +11,8 @@ use Controller\UserController;
 class App
 {
 
-    private array $routes = [
-        '/registration'=>[
-            'GET'=>[
-                'class'=>UserController::class,
-                'method'=>'getRegistrateForm',
-            ],
-            'POST'=>[
-                'class'=>UserController::class,
-                'method'=>'registrate',
-            ]
-        ],
-        '/login'=>[
-            'GET'=>[
-                'class'=>UserController::class,
-                'method'=>'getLoginForm',
-            ],
-            'POST'=>[
-                'class'=>UserController::class,
-                'method'=>'login',
-            ]
-        ],
-        '/catalog'=>[
-            'GET'=>[
-                'class'=>ProductController::class,
-                'method'=>'getCatalog',
-            ],
-        ],
-        '/add-product'=>[
-            'GET'=>[
-                'class'=>BasketController::class,
-                'method'=>'getAddProduct',
-            ],
-            'POST'=>[
-                'class'=>BasketController::class,
-                'method'=>'addProduct',
-            ]
-        ],
-        '/logout'=>[
-            'GET'=>[
-                'class'=>UserController::class,
-                'method'=>'logout',
-            ],
-        ],
-        '/basket'=>[
-            'GET'=>[
-                'class'=>BasketController::class,
-                'method'=>'getBasket',
-            ],
-        ],
-        '/order'=>[
-            'GET'=>[
-                'class'=>OrderController::class,
-                'method'=>'getOrder',
-            ],
-            'POST'=>[
-                'class'=>OrderController::class,
-                'method'=>'handleOrder',
-            ]
-        ],
-        '/completedOrder'=>[
-            'GET'=>[
-                'class'=>OrderController::class,
-                'method'=>'completedOrder',
-            ],
-        ],
-        '/orders'=>[
-            'GET'=>[
-                'class'=>OrderController::class,
-                'method'=>'getOrders',
-            ]
-        ]
-    ];
-    public function run()
+    private array $routes = [];
+    public function run(): void
     {
 
         $requestUri = $_SERVER['REQUEST_URI'];
@@ -107,6 +36,16 @@ class App
         }
 
 
+    }
+
+    public function addRoute(string $uriName, string $uriMethod, string $className, string $method): void
+    {
+        if(!isset($this->routes[$uriName][$uriMethod])) {
+            $this->routes[$uriName][$uriMethod]['class'] = $className;
+            $this->routes[$uriName][$uriMethod]['method'] = $method;
+        } else {
+            echo "$uriMethod уже зарегистрирован для $uriName" . "<br>";
+        }
     }
 
 }
