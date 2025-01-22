@@ -10,15 +10,15 @@
 
                 <div class="totals-item">
                     <label>Номер заказа</label>
-                    <div class="totals-value" id="cart-subtotal"><?php echo $userOrder['id'] ?></div>
+                    <div class="totals-value" id="cart-subtotal"><?php echo $userOrder->getId() ?></div>
                 </div>
                 <div class="totals-item">
                     <label>Дата заказа</label>
-                    <div class="totals-value" id="cart-subtotal"><?php echo $userOrder['datetime'] ?></div>
+                    <div class="totals-value" id="cart-subtotal"><?php echo $userOrder->getDatetime() ?></div>
                 </div>
                 <div class="totals-item">
                     <label>Cумма заказа:</label>
-                    <div class="totals-value" id="cart-subtotal"><?php echo $userOrder['total'] ?></div>
+                    <div class="totals-value" id="cart-subtotal"><?php echo $userOrder->getTotal() ?></div>
                 </div>
 
                 <details>
@@ -28,50 +28,50 @@
                         <label>Адрес доставки:</label>
                         <div class="totals-value" id="cart-subtotal">
                             <?php
-                            echo $userOrder['country'];
-                            echo $userOrder['city'];
-                            echo $userOrder['street'];
-                            echo $userOrder['building'];
+                            echo $userOrder->getCountry();
+                            echo $userOrder->getCity();
+                            echo $userOrder->getStreet();
+                            echo $userOrder->getBuilding();
                             ?></div>
                     </div>
 
                     <div class="totals-item">
                         <label>Телефон:</label>
-                        <div class="totals-value" id="cart-subtotal"><?php echo $userOrder['number'] ?></div>
+                        <div class="totals-value" id="cart-subtotal"><?php echo $userOrder->getNumber() ?></div>
                     </div>
 
 
                     <div class="totals-item">
                         <label>Cумма заказа:</label>
-                        <div class="totals-value" id="cart-subtotal"><?php echo $userOrder['total'] ?></div>
+                        <div class="totals-value" id="cart-subtotal"><?php echo $userOrder->getTotal() ?></div>
                     </div>
                     <div class="totals-item">
                         <label>Доставка:</label>
-                        <div class="totals-value" id="cart-subtotal"><?php echo $userOrder['delivery'] ?></div>
+                        <div class="totals-value" id="cart-subtotal"><?php echo $userOrder->getDelivery() ?></div>
                     </div>
                     <div class="totals-item">
                         <label>Итого:</label>
-                        <div class="totals-value" id="cart-subtotal"><?php echo $userOrder['subtotal'] ?></div>
+                        <div class="totals-value" id="cart-subtotal"><?php echo $userOrder->getSubtotal() ?></div>
                     </div>
 
                     <a class="catalog__product-img" href="/">
-                        <img src="<?php echo $userOrder['image'];?>" width="330" alt="">
+                        <img src="<?php echo $userOrder->getImage();?>" width="330" alt="">
                     </a>
 
                     <div class="catalog__product-body">
-                        <h2 class="catalog__product-title"><?php echo $userOrder['category'];?>
-                            <a href="/"><?php echo $userOrder['nameproduct'];?></a></h2>
+                        <h2 class="catalog__product-title"><?php echo $userOrder->getCategory();?>
+                            <a href="/"><?php echo $userOrder->getNameproduct();?></a></h2>
 
 
                     </div>
 
                     <div class="catalog__product-offer">
                         <label>Цена товара:</label>
-                        <p class="catalog__product-price"><?php echo $userOrder['price'];?></p>
+                        <p class="catalog__product-price"><?php echo $userOrder->getPrice();?></p>
                     </div>
                     <div class="catalog__product-offer">
                         <label>Количество:</label>
-                        <p class="catalog__product-price"><?php echo $userOrder['amount'];?></p>
+                        <p class="catalog__product-price"><?php echo $userOrder->getAmount();?></p>
                     </div>
 
 

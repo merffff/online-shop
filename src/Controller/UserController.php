@@ -2,6 +2,9 @@
 
 namespace Controller;
 use model\User;
+use Request\LoginRequest;
+use Request\RegistrateRequest;
+
 class UserController
 {
 
@@ -18,16 +21,16 @@ class UserController
     {
         require_once './../view/registrate.php';
     }
-    public function registrate()
+    public function registrate(RegistrateRequest $request)
     {
-        $error = $this->validateRegistrationForm($_POST);
+        $error = $request->validate();
 
         if (empty($error)) {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $login = $_POST['login'];
-            $password = $_POST['password'];
-            $passwordRep = $_POST['passwordRep'];
+            $name = $request->getName();
+            $email = $request->getEmail();
+            $login = $request->getlogin();
+            $password = $request->getPassword();
+            $passwordRep = $request->getPasswordRep();
             $hash = password_hash($password, PASSWORD_DEFAULT);
 
             $this->userModel->create($name, $email, $login, $hash);
@@ -42,114 +45,31 @@ class UserController
 
     }
 
-    private function validateRegistrationForm(array $arrPost): array
-    {
-        $error = [];
-
-        if (isset($arrPost['name'])) {
-            $name = $arrPost['name'];
-
-            if (empty($name)) {
-                $error['name'] = 'имя не может быть пустым';
-            } elseif (strlen($name) < 2) {
-                $error['name'] = 'имя не может содержать меньше двух букв';
-            } elseif (is_numeric($name)) {
-                echo $error['name'] = 'имя не может быть числом';
-            }
-        } else {
-            $error['name'] = 'name is required';
-        }
-
-
-        if (isset($arrPost['email'])) {
-            $email = $arrPost['email'];
-
-            if (empty($email)) {
-                $error['email'] = 'email не может быть пустым';
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error['email'] = 'email указан неверно';
-            } else {
-
-                $data = $this->userModel->getByEmail($email);
-
-                if ($data !== false) {
-                    $error['email'] = 'пользователь с указанной почтой существует';
-                }
-            }
-        } else {
-            $error['email'] = 'email is required';
-        }
-
-        if (isset($arrPost['login'])) {
-            $login = $arrPost['login'];
-
-            if (empty($login)) {
-                $error['login'] = 'логин не может быть пустым';
-            } elseif (strlen($login) < 2) {
-                $error['login'] = 'логин не может содержать меньше двух символов';
-            } elseif (is_numeric($login)) {
-                echo $error['login'] = 'логин не должен содержать только цифры';
-            }
-        } else {
-            $error['login'] = 'login is required';
-        }
-
-        if (isset($arrPost['password'])) {
-            $password = $arrPost['password'];
-
-            if (empty($password)) {
-                $error['password'] = 'пароль не может быть пустым';
-            } elseif (strlen($password) < 8) {
-                $error['password'] = 'пароль должен содержать не менее 8 символов';
-            } elseif (is_numeric($password)) {
-                $error['password'] = 'пароль не должен содержать только цифры';
-            }
-        } else {
-            $error['password'] = 'password is required';
-        }
-
-        if (isset($arrPost['passwordRep'])) {
-            $passwordRep = $arrPost['passwordRep'];
-
-            if (empty($passwordRep)) {
-                $error['passwordRep'] = 'поле не должно быть пустым';
-            } elseif ($passwordRep !== $password) {
-                $error['passwordRep'] = 'пароль не совпадает';
-            }
-        } else {
-            $error['passwordRep'] = 'repeat password is required';
-        }
-
-        return $error;
-    }
-
-
-
 
     public function getLoginForm()
     {
         require_once './../view/login.php';
     }
 
-    public function login()
+    public function login(LoginRequest $request)
     {
-        $error = $this-> validateLoginForm($_POST);
+        $error = $request->validate();
 
         if (empty($error)) {
-            $login = $_POST['login'];
-            $password = $_POST['password'];
+            $login = $request->getlogin();
+            $password = $request->getPassword();
 
-            $data = $this->userModel->getByLogin($login);
+            $user = $this->userModel->getByLogin($login);
 
-            if ($data === false) {
+            if (!$user) {
                 $error['login'] = 'логин или пароль указаны неверно';
             } else {
-                $passwordFromDb = $data['password'];
+                $passwordFromDb = $user->getPassword();
 
                 if (password_verify($password, $passwordFromDb)) {
                     // setcookie('user_id', $data['id']);
                     session_start();
-                    $_SESSION['user_id'] = $data['id'];
+                    $_SESSION['user_id'] = $user->getId();
                     header("Location: /catalog");
                 } else {
                     $error ['login'] = 'логин или пароль указаны неверно';
@@ -162,33 +82,6 @@ class UserController
 
     }
 
-    private function validateLoginForm(array $arrPost): array
-    {
-
-        $error = [];
-
-        if (isset($arrPost['login'])) {
-            $login = $arrPost['login'];
-
-            if (empty($login)) {
-                $error['login'] = 'логин не может быть пустым';
-            }
-        } else {
-            $error['login'] = 'login is required';
-        }
-
-        if (isset($arrPost['password'])) {
-            $password = $arrPost['password'];
-
-            if (empty($password)) {
-                $error['password'] = 'пароль не может быть пустым';
-            }
-        } else {
-            $error['password'] = 'password is required';
-        }
-
-        return $error;
-    }
 
     public function logout()
     {

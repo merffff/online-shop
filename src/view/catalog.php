@@ -4,18 +4,18 @@
         <div class="catalog__product  mix  cheap">
             <?php foreach ($products as $product): ?>
                 <a class="catalog__product-img" href="/">
-                    <img src="<?php echo $product['image'];?>" width="330" alt="">
+                    <img src="<?php echo $product->getImage();?>" width="330" alt="">
                 </a>
 
                 <div class="catalog__product-body">
-                    <h2 class="catalog__product-title"><?php echo $product['category'];?>
-                        <a href="/"><?php echo $product['nameproduct'];?></a></h2>
+                    <h2 class="catalog__product-title"><?php echo $product->getCategory();?>
+                        <a href="/"><?php echo $product->getNameproduct();?></a></h2>
 
 
                 </div>
 
                 <div class="catalog__product-offer">
-                    <p class="catalog__product-price"><?php echo $product['price'];?></p>
+                    <p class="catalog__product-price"><?php echo $product->getPrice();?></p>
                     <a href="/add-product">Добавить в корзину</a>
                 </div>
             <?php endforeach;?>

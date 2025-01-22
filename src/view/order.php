@@ -111,20 +111,20 @@
     foreach ($products as $product) :?>
         <div class="product">
             <div class="product-image">
-                <img src="<?php echo $product['image'] ?>">
+                <img src="<?php echo $product->getImage() ?>">
             </div>
             <div class="product-details">
-                <div class="product-title"><?php echo $product['nameproduct']?></div>
+                <div class="product-title"><?php echo $product->getNameproduct()?></div>
 
             </div>
-            <div class="product-price"><?php echo $product['price']?></div>
+            <div class="product-price"><?php echo $product->getPrice()?></div>
             <div class="product-quantity">
-                <?php echo $product['amount']?>
+                <?php echo $product->getAmount()?>
             </div>
 
 
             <div class="product-line-price"><?php
-                $sum = $product['amount']*$product['price'];
+                $sum = $product->getAmount()*$product->getPrice();
                 $total = $total+$sum;
                 echo $sum ?>
             </div>
