@@ -22,6 +22,7 @@ class Order extends Model
     private string $city;
     private string $street;
     private string $building;
+    private array $products;
     public function createOrder(int $user_id, int $address_id, int $number, float $total )
     {
 
@@ -31,7 +32,7 @@ class Order extends Model
         $stmt->execute(['user_id' => $user_id, 'address_id' => $address_id, 'number' => $number, 'total' => $total]);
     }
 
-    public function getOneByUserId(int $user_id): ?self
+    public function getOneByUserId(int $user_id): self|false
     {
 
         $stmt = $this->pdo->prepare("SELECT * FROM orders WHERE user_id = :user_id ORDER BY id DESC LIMIT 1");
@@ -44,7 +45,7 @@ class Order extends Model
      * @param int $user_id
      * @return Order[]|null
      */
-    public function getAllByUserId(int $user_id): ?array
+    public function getAllByUserId(int $user_id): array|false
     {
 
         $stmt = $this->pdo->prepare("SELECT * FROM orders WHERE user_id = :user_id");
@@ -53,7 +54,7 @@ class Order extends Model
         return $this->hydrateAll($data);
     }
 
-    private function hydrateOne(array $data): ?self
+    private function hydrateOne(array|bool $data): self|false
     {
         if ($data === false) {
             return false;
@@ -72,7 +73,7 @@ class Order extends Model
 
     }
 
-    private function hydrateAll(array $data): ?array
+    private function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;
@@ -188,6 +189,18 @@ class Order extends Model
     {
         return $this->building;
     }
+
+    public function getProducts(): array
+    {
+        return $this->products;
+    }
+
+    public function setProducts(array $products): void
+    {
+        $this->products = $products;
+    }
+
+
 
 
 

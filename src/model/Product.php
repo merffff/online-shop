@@ -10,7 +10,9 @@ class Product extends Model
     private string $image;
     private float $price;
     private int $amount;
-    public function getProducts(): ?array
+    private int $orderId;
+    private float $sum;
+    public function getProducts(): array|false
     {
 
         $stmt = $this->pdo->query("SELECT * FROM products");
@@ -20,7 +22,7 @@ class Product extends Model
         return $this->hydrateAll($data);
     }
 
-    public function getById(int $product_id): ?self
+    public function getById(int $product_id): self|false
     {
         $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id = :id");
         $stmt->execute(['id' => $product_id]);
@@ -30,7 +32,7 @@ class Product extends Model
 
     }
 
-    public function getByUserIdDataBasket(int $user_id): ?array
+    public function getByUserIdDataBasket(int $user_id): array|false
     {
 
 
@@ -42,7 +44,7 @@ class Product extends Model
 
     }
 
-    public function getAllByIds($product_id): ?array
+    public function getAllByIds($product_id): array|false
     {
         $place_holders = '?' . str_repeat(', ?',count($product_id) - 1);
         $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id IN ($place_holders)");
@@ -53,7 +55,7 @@ class Product extends Model
 
     }
 
-    private function hydrateAll(array $data): ?array
+    private function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;
@@ -78,7 +80,7 @@ class Product extends Model
         }
 
     }
-    private function hydrateOne(array $data): ?self
+    private function hydrateOne(array|bool $data): self|false
     {
         if ($data === false) {
             return false;
@@ -132,6 +134,12 @@ class Product extends Model
         return $this->amount;
     }
 
+    public function getOrderId(): int
+    {
+        return $this->orderId;
+    }
+
+
 
     public function setId(int $id): void
     {
@@ -167,6 +175,23 @@ class Product extends Model
     {
         $this->amount = $amount;
     }
+
+    public function setOrderId(int $orderId): void
+    {
+        $this->orderId = $orderId;
+    }
+
+    public function getSum(): float
+    {
+        return $this->sum;
+    }
+
+    public function setSum(float $sum): void
+    {
+        $this->sum = $sum;
+    }
+
+
 
 
 

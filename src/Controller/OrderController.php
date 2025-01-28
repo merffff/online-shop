@@ -1,32 +1,37 @@
 <?php
 
 namespace Controller;
-use model\UserProduct;
+use DTO\CreateOrderDTO;
 use model\Product;
 use model\User;
 use model\UserAddress;
 use model\Order;
 use model\OrderProduct;
 use Request\OrderRequest;
+use Service\BasketProductService;
+use Service\OrderService;
 
 
 class OrderController
 {
-    private UserProduct $userProductModel;
     private Product $productModel;
     private User $userModel;
     private UserAddress $userAddressModel;
     private Order $orderModel;
     private OrderProduct $orderProductModel;
+    private OrderService $orderService;
+    private BasketProductService $productService;
 
     public function __construct()
     {
         $this->productModel = new Product();
-        $this->userProductModel = new UserProduct();
         $this->userModel = new User();
         $this->userAddressModel = new UserAddress();
         $this->orderModel = new Order();
         $this->orderProductModel = new OrderProduct();
+        $this->orderService = new OrderService();
+        $this->productService = new BasketProductService();
+
     }
 
     public function getOrder()
@@ -37,28 +42,11 @@ class OrderController
 
         $email = $this->userModel->getEmailById($user_id);
 
-        $userProducts = $this->userProductModel->getByUserId($user_id);
+        $products = $this->productService->getUserProduct($user_id);
+        $total = $this->productService->getTotal($products);
+        $delivery = $this->productService->getDelivery($total);
+        $subtotal = $this->productService->getSubtotal($delivery, $total);
 
-        $products =[];
-        $total=0;
-
-        foreach ($userProducts as $userProduct) {
-            $productId = $userProduct->getProductId();
-            $product = $this->productModel->getById($productId);
-            $product->setAmount($userProduct->getAmount());
-            $products[] =$product;
-            $sum = $product->getAmount()*$product->getPrice();
-            $total = $total+$sum;
-
-        }
-
-        if ($total >= 250000) {
-            $delivery = 0;
-        } else {
-            $delivery = 500;
-        }
-
-        $subtotal = $delivery+$total;
 
         require_once './../view/order.php';
     }
@@ -82,73 +70,10 @@ class OrderController
             $street = $request->getStreet();
             $building = $request->getBuilding();
 
-
-
-            $this->userAddressModel->createUserAddress($user_id,$country,$city,$street,$building);
-            $address = $this->userAddressModel->getById($user_id);
-            $address_id=$address->getId();
-
-            $userProducts = $this->userProductModel->getByUserId($user_id);
-
-            $products =[];
-            $subtotal=0;
-
-            foreach ($userProducts as $userProduct) {
-                $productId = $userProduct->getProductId();
-                $product = $this->productModel->getById($productId);
-                $product->setAmount( $userProduct->getAmount());
-                $products[] =$product;
-                $sum = $product->getAmount()*$product->getPrice();
-                $subtotal = $subtotal+$sum;
-
-            }
-
-            if ($subtotal >= 250000) {
-                $delivery = 0;
-            } else {
-                $delivery = 500;
-            }
-
-            $total = $delivery+$subtotal;
-
-            $this->orderModel->createOrder($user_id,$address_id,$number,$total);
-
-            $userOrder = $this->orderModel->getOneByUserId($user_id);
-
-            $productIds = [];
-            foreach ($userProducts as $userProduct) {
-                $productIds[] = $userProduct->getProductId();
-            }
-
-            $products = $this->productModel->getAllByIds($productIds);
-
-            foreach ($products as $product) {
-                foreach ($userProducts as &$userProduct) {
-                    if ($userProduct->getProductId() === $product->getId()) {
-                        $userProduct->setPrice($product->getPrice());
-
-                    }
-                }
-                unset($userProduct);
-            }
-
-            foreach ($userProducts as $userProduct) {
-                $order_id = $userOrder->getId();
-                $product_id = $userProduct->getProductId();
-                $amount = $userProduct->getAmount();
-                $price = $userProduct->getPrice();
-                $this->orderProductModel->createOrderProduct($order_id,$product_id,$amount,$price);
-            }
-
-            $this->userProductModel->deleteAllByUserId($user_id);
-
-
-
+            $dto = new CreateOrderDTO($user_id,$number,$name,$country,$city,$street,$building);
+            $this->orderService->create($dto);
 
             header("Location: /completedOrder");
-
-
-
 
         } else {
 
@@ -177,67 +102,43 @@ class OrderController
         $user_id = $_SESSION['user_id'];
         $userOrders = $this->orderModel->getAllByUserId($user_id);
 
-        $orderIds = [];
+
+        $products = [];
+
         foreach ($userOrders as $userOrder) {
-            $orderIds[]= $userOrder->getId();
-        }
+            $orderProducts = $this->orderProductModel->getByOrderId($userOrder->getId());
+            foreach ($orderProducts as &$orderProduct) {
+
+                    $productId = $orderProduct->getProductId();
+                    $product = $this->productModel->getById($productId);
+                    $product->setAmount($orderProduct->getAmount());
+                    $product->setPrice($orderProduct->getPrice());
+                    $product->setOrderId($orderProduct->getOrderId());
+                    $products[] = $product;
 
 
-
-        $orderProducts = $this->orderProductModel->getAllByOrderId($orderIds);
-
-
-
-
-        foreach ($orderProducts as $orderProduct) {
-
-            foreach ($userOrders as &$userOrder) {
-                if ($userOrder->getId() === $orderProduct->getOrderId()) {
-                   $userOrder->setProductId($orderProduct->getProductId());
-                   $userOrder->setAmount($orderProduct->getAmount());
-                   $userOrder->setPrice( $orderProduct->getPrice());
-                    if ($userOrder->getTotal() >= 250000) {
-                        $userOrder->setDelivery(0);
-                    } else {
-                        $userOrder->setDelivery(500);
-                    }
-
-                    $userOrder->setSubtotal($userOrder->getDelivery()+$userOrder->getTotal());
-                }
             }
-            unset($userOrder);
+            unset($orderProduct);
+            $userOrder->setProducts($products);
+            $products = [];
         }
 
 
-
-        $productIds = [];
-        foreach ($userOrders as $userOrder) {
-            $productIds[] = $userOrder->getProductId();
-        }
-
-
-        $products = $this->productModel->getAllByIds($productIds);
-
-
-        foreach ($products as $product) {
-
-            foreach ($userOrders as &$userOrder) {
-                if ($userOrder->getProductId() === $product->getId()) {
-                    $userOrder->setNameproduct( $product->getNameproduct());
-                    $userOrder->setCategory($product->getCategory());
-                    $userOrder->setImage($product->getImage());
-                }
+        foreach ($userOrders as &$userOrder) {
+            if ($userOrder->getTotal() >= 250000) {
+                $userOrder->setDelivery(0);
+            } else {
+                $userOrder->setDelivery(500);
             }
-            unset($userOrder);
-        }
+
+            $userOrder->setSubtotal($userOrder->getDelivery()+$userOrder->getTotal());
+        } unset ($userOrder);
+
 
         $addressIds = [];
         foreach ($userOrders as $userOrder) {
             $addressIds[] = $userOrder->getAddressId();
         }
-
-
-
 
 
         $addresses = $this->userAddressModel->getAddressesByIds($addressIds);

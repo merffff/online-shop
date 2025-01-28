@@ -21,6 +21,8 @@
             <?php endforeach;?>
         </div>
 
+        <a href="/orders">Мои заказы</a>
+
         <a href="/logout">Выйти</a>
 
     </div>

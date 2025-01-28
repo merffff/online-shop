@@ -54,25 +54,34 @@
                         <div class="totals-value" id="cart-subtotal"><?php echo $userOrder->getSubtotal() ?></div>
                     </div>
 
+
+
+
+                    <?php foreach ($userOrder->getProducts() as $product): ?>
+
+
                     <a class="catalog__product-img" href="/">
-                        <img src="<?php echo $userOrder->getImage();?>" width="330" alt="">
+                        <img src="<?php echo $product->getImage();?>" width="330" alt="">
                     </a>
 
                     <div class="catalog__product-body">
-                        <h2 class="catalog__product-title"><?php echo $userOrder->getCategory();?>
-                            <a href="/"><?php echo $userOrder->getNameproduct();?></a></h2>
+                        <h2 class="catalog__product-title"><?php echo $product->getCategory();?>
+                            <a href="/"><?php echo $product->getNameproduct();?></a></h2>
 
 
                     </div>
 
                     <div class="catalog__product-offer">
                         <label>Цена товара:</label>
-                        <p class="catalog__product-price"><?php echo $userOrder->getPrice();?></p>
+                        <p class="catalog__product-price"><?php echo $product->getPrice();?></p>
                     </div>
                     <div class="catalog__product-offer">
                         <label>Количество:</label>
-                        <p class="catalog__product-price"><?php echo $userOrder->getAmount();?></p>
+                        <p class="catalog__product-price"><?php echo $product->getAmount();?></p>
                     </div>
+
+
+                    <?php endforeach;?>
 
 
 

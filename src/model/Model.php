@@ -11,4 +11,10 @@ class Model
         $this->pdo = new PDO ('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pass');
     }
 
+    public function getPdo(): PDO
+    {
+        return $this->pdo;
+    }
+
+
 }

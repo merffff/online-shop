@@ -10,8 +10,7 @@
 
         <label class="product-line-price">Итого:</label>
     </div>
-    <?php $total=0;
-    foreach ($products as $product) :?>
+    <?php foreach ($products as $product) :?>
         <div class="product">
             <div class="product-image">
                 <img src="<?php echo $product->getImage() ?>">
@@ -27,9 +26,7 @@
 
 
             <div class="product-line-price"><?php
-                $sum = $product->getAmount()*$product->getPrice();
-                $total = $total+$sum;
-                echo $sum ?>
+                echo $product->getSum() ?>
             </div>
         </div>
     <?php endforeach;?>

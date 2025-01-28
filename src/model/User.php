@@ -36,7 +36,7 @@ class User extends Model
         return $this->hydrate($data);
     }
 
-    public function getEmailById(int $id): ?self
+    public function getEmailById(int $id): self|false
     {
 
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
@@ -46,7 +46,7 @@ class User extends Model
         return $this->hydrate($data);
     }
 
-    private function hydrate(array $data): self
+    private function hydrate(array|bool $data): self|false
     {
         if ($data === false) {
             return false;

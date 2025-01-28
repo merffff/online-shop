@@ -18,7 +18,7 @@ class OrderProduct extends Model
         $stmt->execute(['order_id' => $order_id, 'product_id' => $product_id, 'amount' => $amount, 'price' => $price]);
     }
 
-    public function getAllByOrderId($order_id): ?array
+    public function getAllByOrderId($order_id): array|false
     {
         $place_holders = '?' . str_repeat(', ?',count($order_id) - 1);
         $stmt = $this->pdo->prepare("SELECT * FROM order_product WHERE order_id IN ($place_holders)");
@@ -29,7 +29,16 @@ class OrderProduct extends Model
 
     }
 
-    private function hydrateAll(array $data): ?array
+    public function getByOrderId(int $order_id): array|false
+    {
+
+        $stmt = $this->pdo->prepare("SELECT * FROM order_product WHERE order_id = :order_id");
+        $stmt->execute(['order_id' => $order_id]);
+        $data = $stmt->fetchAll();
+        return $this->hydrateAll($data);
+    }
+
+    private function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;

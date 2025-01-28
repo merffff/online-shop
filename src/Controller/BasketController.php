@@ -2,19 +2,19 @@
 
 namespace Controller;
 use model\UserProduct;
-use model\Product;
 use Request\BasketRequest;
+use Service\BasketProductService;
 
 
 class BasketController
 {
     private UserProduct $userProductModel;
-    private Product $productModel;
+    private BasketProductService $productService;
 
     public function __construct()
     {
-        $this->productModel = new Product();
         $this->userProductModel = new UserProduct();
+        $this->productService = new BasketProductService();
     }
 
     public function getAddProduct()
@@ -63,16 +63,11 @@ class BasketController
 
         $user_id = $_SESSION['user_id'];
 
-        $userProducts = $this->userProductModel->getByUserId($user_id);
+        $products = $this->productService->getUserProduct($user_id);
+        $total = $this->productService->getTotal($products);
+        $delivery = $this->productService->getDelivery($total);
+        $subtotal = $this->productService->getSubtotal($delivery, $total);
 
-        $products =[];
-
-        foreach ($userProducts as $userProduct) {
-            $productId = $userProduct->getProductId();
-            $product = $this->productModel->getById($productId);
-            $product->setAmount($userProduct->getAmount());
-            $products[] =$product;
-        }
 
             //$userProducts = $this->productModel->getByUserIdDataBasket($user_id);
 

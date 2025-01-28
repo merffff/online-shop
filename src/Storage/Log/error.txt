@@ -1,0 +1,10 @@
+Service\BasketProductService::getUserProduct(): Return value must be of type array, float returned/var/www/html/src/Service/BasketProductService.php492025-01-28 14:24:11Service\BasketProductService::getUserProduct(): Argument #1 ($user_id) must be of type int, null given, called in /var/www/html/src/Controller/BasketController.php on line 66/var/www/html/src/Service/BasketProductService.php242025-01-28 14:28:05{"message":"Typed property Service\\BasketProductService::$products must not be accessed before initialization","file":"\/var\/www\/html\/src\/Service\/BasketProductService.php","line":63,"datetime":"2025-01-28 14:36:12"}{"message":"Typed property Service\\BasketProductService::$products must not be accessed before initialization","file":"\/var\/www\/html\/src\/Service\/BasketProductService.php","line":63,"datetime":"2025-01-28 14:37:33"}{"message":"Typed property Service\\BasketProductService::$products must not be accessed before initialization","file":"\/var\/www\/html\/src\/Service\/BasketProductService.php","line":63,"datetime":"2025-01-28 14:37:56"}Ошибка: Class "mysql_xdevapi\Exception" not found
+Файл: /var/www/html/src/Service/OrderService.php
+Строка: 58
+Время: 2025-01-28 15:54:49
+
+Ошибка: Class "mysql_xdevapi\Exception" not found
+Файл: /var/www/html/src/Service/OrderService.php
+Строка: 58
+Время: 2025-01-28 15:59:02
+

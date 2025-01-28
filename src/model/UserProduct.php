@@ -34,7 +34,7 @@ class UserProduct extends Model
         $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id, 'amount' => $amount]);
     }
 
-    public function getByUserId(int $user_id): ?array
+    public function getByUserId(int $user_id): array|false
     {
 
         $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id");
@@ -50,7 +50,7 @@ class UserProduct extends Model
         $stmt->execute(['user_id' => $user_id]);
     }
 
-    private function hydrateOne( $data): self|false
+    private function hydrateOne(array|bool $data): self|false
     {
         if ($data === false) {
             return false;
@@ -66,7 +66,7 @@ class UserProduct extends Model
         }
 
     }
-    private function hydrateAll(array $data): ?array
+    private function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;

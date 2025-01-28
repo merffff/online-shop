@@ -18,7 +18,7 @@ class UserAddress extends Model
         $stmt->execute(['user_id' => $user_id, 'country' => $country, 'city' => $city, 'street' => $street, 'building' => $building]);
     }
 
-    public function getById (int $user_id): ?self
+    public function getById (int $user_id): self|false
     {
 
         $stmt = $this->pdo->prepare("SELECT * FROM user_addresses WHERE user_id = :user_id ORDER BY id DESC");
@@ -27,7 +27,7 @@ class UserAddress extends Model
         return $this->hydrateOne($data);
     }
 
-    public function getAddressesByIds($address_id): ?array
+    public function getAddressesByIds($address_id): array|false
     {
         $place_holders = '?' . str_repeat(', ?',count($address_id) - 1);
         $stmt = $this->pdo->prepare("SELECT * FROM user_addresses WHERE id IN ($place_holders)");
@@ -39,7 +39,7 @@ class UserAddress extends Model
 
     }
 
-    private function hydrateAll(array $data): ?array
+    private function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;
@@ -66,7 +66,7 @@ class UserAddress extends Model
 
     }
 
-    private function hydrateOne(array|bool $data): ?self
+    private function hydrateOne(array|bool $data): self|false
     {
         if ($data === false) {
             return false;
