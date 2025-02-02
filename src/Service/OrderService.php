@@ -20,7 +20,6 @@ class OrderService
     private Order $orderModel;
     private OrderProduct $orderProductModel;
     private BasketProductService $productService;
-    private Model $model;
 
     public function __construct()
     {
@@ -30,11 +29,11 @@ class OrderService
         $this->orderModel = new Order();
         $this->orderProductModel = new OrderProduct();
         $this->productService = new BasketProductService();
-        $this->model = new Model();
     }
     public function create(CreateOrderDTO $orderDTO)
     {
-        $this->model->getPdo()->beginTransaction();
+        $pdo = Model::getPdo();
+        $pdo->beginTransaction();
          try {
 
 
@@ -89,12 +88,13 @@ class OrderService
 
              $this->userProductModel->deleteAllByUserId($orderDTO->getUserId());
          } catch (\PDOException $exception) {
-             $this->model->getPdo()->rollBack();
+             $pdo->rollBack();
 
              throw $exception;
          }
 
-         $this->model->getPdo()->commit();
+         $pdo->commit();
+
     }
 
 

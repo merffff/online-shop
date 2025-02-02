@@ -9,36 +9,36 @@ class OrderProduct extends Model
     private int $amount;
     private float $price;
 
-    public function createOrderProduct(int $order_id,int $product_id,int $amount,float $price)
+    public static function createOrderProduct(int $order_id,int $product_id,int $amount,float $price)
     {
 
-        $stmt = $this->pdo->prepare("INSERT INTO order_product (order_id, product_id, amount, price ) VALUES (:order_id, :product_id,:amount,:price)");
+        $stmt = self::getPdo()->prepare("INSERT INTO order_product (order_id, product_id, amount, price ) VALUES (:order_id, :product_id,:amount,:price)");
 
 
         $stmt->execute(['order_id' => $order_id, 'product_id' => $product_id, 'amount' => $amount, 'price' => $price]);
     }
 
-    public function getAllByOrderId($order_id): array|false
+    public static function getAllByOrderId($order_id): array|false
     {
         $place_holders = '?' . str_repeat(', ?',count($order_id) - 1);
-        $stmt = $this->pdo->prepare("SELECT * FROM order_product WHERE order_id IN ($place_holders)");
+        $stmt = self::getPdo()->prepare("SELECT * FROM order_product WHERE order_id IN ($place_holders)");
         $stmt->execute($order_id);
         $data = $stmt->fetchAll();
-        return $this->hydrateAll($data);
+        return self::hydrateAll($data);
 
 
     }
 
-    public function getByOrderId(int $order_id): array|false
+    public static function getByOrderId(int $order_id): array|false
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM order_product WHERE order_id = :order_id");
+        $stmt = self::getPdo()->prepare("SELECT * FROM order_product WHERE order_id = :order_id");
         $stmt->execute(['order_id' => $order_id]);
         $data = $stmt->fetchAll();
-        return $this->hydrateAll($data);
+        return self::hydrateAll($data);
     }
 
-    private function hydrateAll(array|bool $data): array|false
+    private static function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;

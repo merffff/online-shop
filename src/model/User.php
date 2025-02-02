@@ -9,44 +9,44 @@ class User extends Model
     private string $email;
     private string $login;
     private string $password;
-    public function create(string $name, string $email, string $login, string $password)
+    public static function create(string $name, string $email, string $login, string $password)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO users (name, email,login, password) VALUES (:name, :email,:login,:password)");
+        $stmt = self::getPdo()->prepare("INSERT INTO users (name, email,login, password) VALUES (:name, :email,:login,:password)");
 
         $stmt->execute(['name' => $name, 'email' => $email, 'login' => $login, 'password' => $password]);
     }
 
-    public function getByLogin (string $login): ?self
+    public static function getByLogin (string $login): ?self
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE login = :login");
+        $stmt = self::getPdo()->prepare("SELECT * FROM users WHERE login = :login");
         $stmt->execute(['login' => $login]);
         $data = $stmt->fetch();
 
-        return $this->hydrate($data);
+        return self::hydrate($data);
     }
 
-    public function getByEmail(string $email): ?self
+    public static function getByEmail(string $email): ?self
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt = self::getPdo()->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $data = $stmt->fetch();
 
-        return $this->hydrate($data);
+        return self::hydrate($data);
     }
 
-    public function getEmailById(int $id): self|false
+    public static function getById(int $id): self|false
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt = self::getPdo()->prepare("SELECT * FROM users WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch();
 
-        return $this->hydrate($data);
+        return self::hydrate($data);
     }
 
-    private function hydrate(array|bool $data): self|false
+    private static function hydrate(array|bool $data): self|false
     {
         if ($data === false) {
             return false;

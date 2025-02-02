@@ -12,11 +12,18 @@ use Request\LoginRequest;
 use Request\OrderRequest;
 use Request\RegistrateRequest;
 use Request\Request;
+use Service\LogerService;
 
 class App
 {
+    private LogerService $logerService;
 
     private array $routes = [];
+
+    public function __construct()
+    {
+        $this->logerService = new LogerService();
+    }
     public function run(): void
     {
 
@@ -35,29 +42,17 @@ class App
                             try {
                                 $obj->$methodRoute($request);
                             } catch (\Throwable $exception) {
-                                $filename = './../Storage/Log/error.txt';
-                                $message= $exception->getMessage();
-                                $file = $exception->getFile();
-                                $line = $exception->getLine();
-                                $datetime= date("Y-m-d H:i:s");
-                                $errorMessage = "Ошибка: $message\nФайл: $file\nСтрока: $line\nВремя: $datetime\n\n";
-                                file_put_contents($filename, $errorMessage,FILE_APPEND);
+                                $this->logerService->record($exception);
                                 http_response_code(500);
                                 require_once "./../view/500.php";
                             }
-
 
                         }else {
                             try {
                                 $obj->$methodRoute();
                             } catch (\Throwable $exception) {
-                                $filename = './../Storage/Log/error.txt';
-                                $message= $exception->getMessage();
-                                $file = $exception->getFile();
-                                $line = $exception->getLine();
-                                $datetime= date("Y-m-d H:i:s");
-                                $errorMessage = "Ошибка: $message\nФайл: $file\nСтрока: $line\nВремя: $datetime\n\n";
-                                file_put_contents($filename, $errorMessage,FILE_APPEND);
+                                $this->logerService->record($exception);
+
                                 http_response_code(500);
                                 require_once "./../view/500.php";
                             }

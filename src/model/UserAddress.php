@@ -10,36 +10,36 @@ class UserAddress extends Model
     private string  $street;
     private string $building;
 
-    public function createUserAddress(int $user_id, string $country, string $city, string $street, string $building)
+    public static function createUserAddress(int $user_id, string $country, string $city, string $street, string $building)
     {
 
-        $stmt = $this->pdo->prepare("INSERT INTO user_addresses (user_id, country, city, street, building ) VALUES (:user_id, :country,:city,:street,:building)");
+        $stmt = self::getPdo()->prepare("INSERT INTO user_addresses (user_id, country, city, street, building ) VALUES (:user_id, :country,:city,:street,:building)");
 
         $stmt->execute(['user_id' => $user_id, 'country' => $country, 'city' => $city, 'street' => $street, 'building' => $building]);
     }
 
-    public function getById (int $user_id): self|false
+    public static function getById (int $user_id): self|false
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM user_addresses WHERE user_id = :user_id ORDER BY id DESC");
+        $stmt = self::getPdo()->prepare("SELECT * FROM user_addresses WHERE user_id = :user_id ORDER BY id DESC");
         $stmt->execute(['user_id' => $user_id]);
         $data = $stmt->fetch();
-        return $this->hydrateOne($data);
+        return self::hydrateOne($data);
     }
 
-    public function getAddressesByIds($address_id): array|false
+    public static function getAddressesByIds($address_id): array|false
     {
         $place_holders = '?' . str_repeat(', ?',count($address_id) - 1);
-        $stmt = $this->pdo->prepare("SELECT * FROM user_addresses WHERE id IN ($place_holders)");
+        $stmt = self::getPdo()->prepare("SELECT * FROM user_addresses WHERE id IN ($place_holders)");
         $stmt->execute($address_id);
         $data = $stmt->fetchAll();
 
-        return $this->hydrateAll($data);
+        return self::hydrateAll($data);
 
 
     }
 
-    private function hydrateAll(array|bool $data): array|false
+    private static function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;
@@ -66,7 +66,7 @@ class UserAddress extends Model
 
     }
 
-    private function hydrateOne(array|bool $data): self|false
+    private static function hydrateOne(array|bool $data): self|false
     {
         if ($data === false) {
             return false;

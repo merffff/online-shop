@@ -11,46 +11,46 @@ class UserProduct extends Model
 
 
 
-    public function getByProductIdAndUserId(int $product_id, int $user_id): self|false
+    public static function getByProductIdAndUserId(int $product_id, int $user_id): self|false
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE product_id = :product_id AND user_id = :user_id");
+        $stmt = self::getPdo()->prepare("SELECT * FROM user_products WHERE product_id = :product_id AND user_id = :user_id");
         $stmt->execute(['product_id' => $product_id, 'user_id' => $user_id]);
         $productIsset = $stmt->fetch();
-        return $this->hydrateOne($productIsset);
+        return self::hydrateOne($productIsset);
 
     }
 
-    public function create(int $user_id, int $product_id, int $amount)
+    public static function create(int $user_id, int $product_id, int $amount)
     {
 
-        $stmt = $this->pdo->prepare("INSERT INTO user_products (user_id, product_id, amount) VALUES (:user_id, :product_id, :amount)");
+        $stmt = self::getPdo()->prepare("INSERT INTO user_products (user_id, product_id, amount) VALUES (:user_id, :product_id, :amount)");
         $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id, 'amount' => $amount]);
     }
 
-    public function update(int $user_id, int $product_id, int $amount)
+    public static function update(int $user_id, int $product_id, int $amount)
     {
-        $stmt = $this->pdo->prepare("UPDATE user_products SET amount = amount + :amount WHERE product_id = :product_id AND user_id = :user_id");
+        $stmt = self::getPdo()->prepare("UPDATE user_products SET amount = amount + :amount WHERE product_id = :product_id AND user_id = :user_id");
         $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id, 'amount' => $amount]);
     }
 
-    public function getByUserId(int $user_id): array|false
+    public static function getByUserId(int $user_id): array|false
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id");
+        $stmt = self::getPdo()->prepare("SELECT * FROM user_products WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $user_id]);
         $data = $stmt->fetchAll();
-        return $this->hydrateAll($data);
+        return self::hydrateAll($data);
     }
 
-    public function deleteAllByUserId(int $user_id)
+    public static function deleteAllByUserId(int $user_id)
     {
 
-        $stmt = $this->pdo->prepare("DELETE FROM user_products WHERE user_id = :user_id");
+        $stmt = self::getPdo()->prepare("DELETE FROM user_products WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $user_id]);
     }
 
-    private function hydrateOne(array|bool $data): self|false
+    private static function hydrateOne(array|bool $data): self|false
     {
         if ($data === false) {
             return false;
@@ -66,7 +66,7 @@ class UserProduct extends Model
         }
 
     }
-    private function hydrateAll(array|bool $data): array|false
+    private static function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;

@@ -2,14 +2,17 @@
 
 namespace Controller;
 use model\Product;
+use Service\AuthService;
 
 class ProductController
 {
     private Product $productModel;
+    private AuthService $authService;
 
     public function __construct()
     {
         $this->productModel = new Product();
+        $this->authService = new AuthService();
     }
 
     public function getCatalog()
@@ -23,9 +26,8 @@ class ProductController
 
     private function checkSession():void
     {
-        session_start();
 
-        if (!isset($_SESSION['user_id'])) {
+        if (!$this->authService->check()) {
             header("Location: /login");
         }
     }

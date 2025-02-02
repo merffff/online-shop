@@ -3,6 +3,7 @@
 namespace Controller;
 use model\UserProduct;
 use Request\BasketRequest;
+use Service\AuthService;
 use Service\BasketProductService;
 
 
@@ -10,11 +11,13 @@ class BasketController
 {
     private UserProduct $userProductModel;
     private BasketProductService $productService;
+    private AuthService $authService;
 
     public function __construct()
     {
         $this->userProductModel = new UserProduct();
         $this->productService = new BasketProductService();
+        $this->authService = new AuthService();
     }
 
     public function getAddProduct()
@@ -33,7 +36,7 @@ class BasketController
 
             $this->checkSession();
 
-            $user_id=$_SESSION['user_id'];
+            $user_id = $this->authService->getCurrentUser()->getId();
             $product_id = $request->getProductId();
             $amount = $request->getAmount();
 
@@ -61,7 +64,7 @@ class BasketController
 
 
 
-        $user_id = $_SESSION['user_id'];
+        $user_id = $this->authService->getCurrentUser()->getId();
 
         $products = $this->productService->getUserProduct($user_id);
         $total = $this->productService->getTotal($products);
@@ -78,9 +81,8 @@ class BasketController
 
     private function checkSession():void
     {
-        session_start();
 
-        if (!isset($_SESSION['user_id'])) {
+        if (!$this->authService->check()) {
             header("Location: /login");
         }
     }

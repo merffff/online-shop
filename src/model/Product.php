@@ -12,50 +12,50 @@ class Product extends Model
     private int $amount;
     private int $orderId;
     private float $sum;
-    public function getProducts(): array|false
+    public static function getProducts(): array|false
     {
 
-        $stmt = $this->pdo->query("SELECT * FROM products");
+        $stmt = self::getPdo()->query("SELECT * FROM products");
         $data = $stmt->fetchAll();
 
 
-        return $this->hydrateAll($data);
+        return self::hydrateAll($data);
     }
 
-    public function getById(int $product_id): self|false
+    public static function getById(int $product_id): self|false
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id = :id");
+        $stmt = self::getPdo()->prepare("SELECT * FROM products WHERE id = :id");
         $stmt->execute(['id' => $product_id]);
         $data = $stmt->fetch();
 
-        return $this->hydrateOne($data);
+        return self::hydrateOne($data);
 
     }
 
-    public function getByUserIdDataBasket(int $user_id): array|false
+    public static function getByUserIdDataBasket(int $user_id): array|false
     {
 
 
-        $stmt = $this->pdo->prepare("SELECT amount, nameproduct, price, image FROM products JOIN user_products ON user_products.product_id = products.id WHERE user_id = :user_id");
+        $stmt = self::getPdo()->prepare("SELECT amount, nameproduct, price, image FROM products JOIN user_products ON user_products.product_id = products.id WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $user_id]);
         $data = $stmt->fetchAll();
 
-        return $this->hydrateAll($data);
+        return self::hydrateAll($data);
 
     }
 
-    public function getAllByIds($product_id): array|false
+    public static function getAllByIds($product_id): array|false
     {
         $place_holders = '?' . str_repeat(', ?',count($product_id) - 1);
-        $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id IN ($place_holders)");
+        $stmt = self::getPdo()->prepare("SELECT * FROM products WHERE id IN ($place_holders)");
         $stmt->execute($product_id);
         $data = $stmt->fetchAll();
 
-        return $this->hydrateAll($data);
+        return self::hydrateAll($data);
 
     }
 
-    private function hydrateAll(array|bool $data): array|false
+    private static function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
             return false;
@@ -80,7 +80,7 @@ class Product extends Model
         }
 
     }
-    private function hydrateOne(array|bool $data): self|false
+    private static function hydrateOne(array|bool $data): self|false
     {
         if ($data === false) {
             return false;

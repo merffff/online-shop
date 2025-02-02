@@ -8,6 +8,7 @@ use model\UserAddress;
 use model\Order;
 use model\OrderProduct;
 use Request\OrderRequest;
+use Service\AuthService;
 use Service\BasketProductService;
 use Service\OrderService;
 
@@ -15,32 +16,30 @@ use Service\OrderService;
 class OrderController
 {
     private Product $productModel;
-    private User $userModel;
     private UserAddress $userAddressModel;
     private Order $orderModel;
     private OrderProduct $orderProductModel;
     private OrderService $orderService;
     private BasketProductService $productService;
+    private AuthService $authService;
 
     public function __construct()
     {
         $this->productModel = new Product();
-        $this->userModel = new User();
         $this->userAddressModel = new UserAddress();
         $this->orderModel = new Order();
         $this->orderProductModel = new OrderProduct();
         $this->orderService = new OrderService();
         $this->productService = new BasketProductService();
+        $this->authService = new AuthService();
 
     }
 
     public function getOrder()
     {
         $this->checkSession();
+        $user_id = $this->authService->getCurrentUser()->getId();
 
-        $user_id = $_SESSION['user_id'];
-
-        $email = $this->userModel->getEmailById($user_id);
 
         $products = $this->productService->getUserProduct($user_id);
         $total = $this->productService->getTotal($products);
@@ -61,7 +60,7 @@ class OrderController
 
             $this->checkSession();
 
-            $user_id = $_SESSION['user_id'];
+            $user_id = $this->authService->getCurrentUser()->getId();
             $number = $request->getNumber();
             $name = $request->getName();
 
@@ -88,7 +87,7 @@ class OrderController
 
         $this->checkSession();
 
-        $user_id = $_SESSION['user_id'];
+        $user_id = $this->authService->getCurrentUser()->getId();
 
         $userData = $this->orderModel->getOneByUserId($user_id);
         require_once './../view/completedOrder.php';
@@ -99,7 +98,7 @@ class OrderController
     {
         $this->checkSession();
 
-        $user_id = $_SESSION['user_id'];
+        $user_id = $this->authService->getCurrentUser()->getId();
         $userOrders = $this->orderModel->getAllByUserId($user_id);
 
 
@@ -170,9 +169,8 @@ class OrderController
 
     private function checkSession():void
     {
-        session_start();
 
-        if (!isset($_SESSION['user_id'])) {
+        if (!$this->authService->check()) {
             header("Location: /login");
         }
     }

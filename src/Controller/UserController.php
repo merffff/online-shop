@@ -4,15 +4,18 @@ namespace Controller;
 use model\User;
 use Request\LoginRequest;
 use Request\RegistrateRequest;
+use Service\AuthService;
 
 class UserController
 {
 
     private User $userModel;
+    private AuthService $authService;
 
     public function __construct()
     {
         $this->userModel = new User();
+        $this->authService = new AuthService();
     }
 
 
@@ -59,22 +62,11 @@ class UserController
             $login = $request->getlogin();
             $password = $request->getPassword();
 
-            $user = $this->userModel->getByLogin($login);
-
-            if (!$user) {
+            if ($this->authService->login($login,$password) === false) {
                 $error['login'] = 'логин или пароль указаны неверно';
-            } else {
-                $passwordFromDb = $user->getPassword();
-
-                if (password_verify($password, $passwordFromDb)) {
-                    // setcookie('user_id', $data['id']);
-                    session_start();
-                    $_SESSION['user_id'] = $user->getId();
-                    header("Location: /catalog");
-                } else {
-                    $error ['login'] = 'логин или пароль указаны неверно';
-                }
             }
+            header("Location: /catalog");
+
         }
 
         require_once './../view/login.php';
