@@ -4,18 +4,16 @@ namespace Controller;
 use model\User;
 use Request\LoginRequest;
 use Request\RegistrateRequest;
+use Service\Auth\AuthServiceInterface;
 use Service\AuthService;
 
 class UserController
 {
+    private AuthServiceInterface $authService;
 
-    private User $userModel;
-    private AuthService $authService;
-
-    public function __construct()
+    public function __construct(AuthServiceInterface $authService)
     {
-        $this->userModel = new User();
-        $this->authService = new AuthService();
+        $this->authService = $authService;
     }
 
 
@@ -36,7 +34,7 @@ class UserController
             $passwordRep = $request->getPasswordRep();
             $hash = password_hash($password, PASSWORD_DEFAULT);
 
-            $this->userModel->create($name, $email, $login, $hash);
+            User::create($name, $email, $login, $hash);
 
             header("Location: /login");
 

@@ -8,6 +8,7 @@ use model\UserAddress;
 use model\Order;
 use model\OrderProduct;
 use Request\OrderRequest;
+use Service\Auth\AuthServiceInterface;
 use Service\AuthService;
 use Service\BasketProductService;
 use Service\OrderService;
@@ -15,23 +16,20 @@ use Service\OrderService;
 
 class OrderController
 {
-    private Product $productModel;
-    private UserAddress $userAddressModel;
-    private Order $orderModel;
-    private OrderProduct $orderProductModel;
     private OrderService $orderService;
     private BasketProductService $productService;
-    private AuthService $authService;
+    private AuthServiceInterface $authService;
 
-    public function __construct()
+    public function __construct(
+        AuthServiceInterface $authService,
+        BasketProductService $productService,
+        OrderService $orderService,
+
+    )
     {
-        $this->productModel = new Product();
-        $this->userAddressModel = new UserAddress();
-        $this->orderModel = new Order();
-        $this->orderProductModel = new OrderProduct();
-        $this->orderService = new OrderService();
-        $this->productService = new BasketProductService();
-        $this->authService = new AuthService();
+        $this->orderService = $orderService;
+        $this->productService = $productService;
+        $this->authService = $authService;
 
     }
 
@@ -89,7 +87,7 @@ class OrderController
 
         $user_id = $this->authService->getCurrentUser()->getId();
 
-        $userData = $this->orderModel->getOneByUserId($user_id);
+        $userData = Order::getOneByUserId($user_id);
         require_once './../view/completedOrder.php';
     }
 
@@ -99,23 +97,21 @@ class OrderController
         $this->checkSession();
 
         $user_id = $this->authService->getCurrentUser()->getId();
-        $userOrders = $this->orderModel->getAllByUserId($user_id);
+        $userOrders = Order::getAllByUserId($user_id);
 
 
         $products = [];
 
         foreach ($userOrders as $userOrder) {
-            $orderProducts = $this->orderProductModel->getByOrderId($userOrder->getId());
+            $orderProducts = OrderProduct::getByOrderId($userOrder->getId());
             foreach ($orderProducts as &$orderProduct) {
 
                     $productId = $orderProduct->getProductId();
-                    $product = $this->productModel->getById($productId);
+                    $product = Product::getById($productId);
                     $product->setAmount($orderProduct->getAmount());
                     $product->setPrice($orderProduct->getPrice());
                     $product->setOrderId($orderProduct->getOrderId());
                     $products[] = $product;
-
-
             }
             unset($orderProduct);
             $userOrder->setProducts($products);
@@ -140,7 +136,7 @@ class OrderController
         }
 
 
-        $addresses = $this->userAddressModel->getAddressesByIds($addressIds);
+        $addresses = UserAddress::getAddressesByIds($addressIds);
 
 
 
@@ -156,10 +152,6 @@ class OrderController
             }
             unset($userOrder);
         }
-
-
-
-
 
 
 

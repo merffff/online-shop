@@ -16,7 +16,7 @@ class User extends Model
         $stmt->execute(['name' => $name, 'email' => $email, 'login' => $login, 'password' => $password]);
     }
 
-    public static function getByLogin (string $login): ?self
+    public static function getByLogin (string $login): self|false
     {
 
         $stmt = self::getPdo()->prepare("SELECT * FROM users WHERE login = :login");
@@ -26,7 +26,7 @@ class User extends Model
         return self::hydrate($data);
     }
 
-    public static function getByEmail(string $email): ?self
+    public static function getByEmail(string $email): self|false
     {
 
         $stmt = self::getPdo()->prepare("SELECT * FROM users WHERE email = :email");

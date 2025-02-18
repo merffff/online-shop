@@ -38,6 +38,8 @@ class OrderProduct extends Model
         return self::hydrateAll($data);
     }
 
+
+
     private static function hydrateAll(array|bool $data): array|false
     {
         if ($data === false) {
@@ -60,6 +62,24 @@ class OrderProduct extends Model
             }
 
             return $orderProducts;
+        }
+
+    }
+
+    private static function hydrateOne(array|bool $data): self|false
+    {
+        if ($data === false) {
+            return false;
+        } else {
+
+            $obj = new self();
+            $obj->id = $data['id'];
+            $obj->order_id = $data['order_id'];
+            $obj->product_id = $data ['product_id'];
+            $obj->amount = $data ['amount'];
+            $obj->price = $data ['price'];
+
+            return $obj;
         }
 
     }

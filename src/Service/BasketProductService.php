@@ -10,23 +10,16 @@ use model\UserProduct;
 
 class BasketProductService
 {
-    private UserProduct $userProductModel;
-    private Product $productModel;
 
-    public function __construct()
-    {
-        $this->productModel = new Product();
-        $this->userProductModel = new UserProduct();
-    }
     public function getUserProduct(int $user_id): array|false
     {
-        $userProducts = $this->userProductModel->getByUserId($user_id);
+        $userProducts = UserProduct::getByUserId($user_id);
 
         $products =[];
 
         foreach ($userProducts as $userProduct) {
             $productId = $userProduct->getProductId();
-            $product = $this->productModel->getById($productId);
+            $product = Product::getById($productId);
             $product->setAmount($userProduct->getAmount());
             $products[] =$product;
 
@@ -61,6 +54,18 @@ class BasketProductService
     {
         $subtotal = $delivery + $total;
         return $subtotal;
+    }
+
+    public function addProduct(int $product_id, int $user_id, int $amount)
+    {
+        $productIsset = UserProduct::getByProductIdAndUserId($product_id, $user_id);
+
+        if ($productIsset === false) {
+            UserProduct::create($user_id, $product_id, $amount);
+        } else {
+            UserProduct::update($user_id,$product_id,$amount);
+        }
+
     }
 
 

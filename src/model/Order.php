@@ -54,6 +54,14 @@ class Order extends Model
         return self::hydrateAll($data);
     }
 
+    public static function getByUserIdAndProductId(int $user_id, int $product_id):self|false
+    {
+        $stmt = self::getPdo()->prepare("SELECT * FROM orders JOIN order_product ON order_product.order_id = orders.id WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt->execute(['product_id'=>$product_id, 'user_id'=>$user_id]);
+        $data = $stmt->fetch();
+        return self::hydrateOne($data);
+    }
+
     private static function hydrateOne(array|bool $data): self|false
     {
         if ($data === false) {

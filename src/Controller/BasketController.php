@@ -3,21 +3,20 @@
 namespace Controller;
 use model\UserProduct;
 use Request\BasketRequest;
+use Service\Auth\AuthServiceInterface;
 use Service\AuthService;
 use Service\BasketProductService;
 
 
 class BasketController
 {
-    private UserProduct $userProductModel;
     private BasketProductService $productService;
-    private AuthService $authService;
+    private AuthServiceInterface $authService;
 
-    public function __construct()
+    public function __construct(AuthServiceInterface $authService, BasketProductService $productService)
     {
-        $this->userProductModel = new UserProduct();
-        $this->productService = new BasketProductService();
-        $this->authService = new AuthService();
+        $this->productService = $productService;
+        $this->authService = $authService;
     }
 
     public function getAddProduct()
@@ -40,14 +39,7 @@ class BasketController
             $product_id = $request->getProductId();
             $amount = $request->getAmount();
 
-            $productIsset = $this->userProductModel->getByProductIdAndUserId($product_id, $user_id);
-
-            if ($productIsset === false) {
-                $this->userProductModel->create($user_id, $product_id, $amount);
-            } else {
-                $this->userProductModel->update($user_id,$product_id,$amount);
-            }
-
+            $this->productService->addProduct($product_id, $user_id, $amount);
 
             header("Location: /basket");
             exit;
@@ -55,6 +47,45 @@ class BasketController
             require_once './../view/addProduct.php';
         }
 
+    }
+
+    public function addProducts(BasketRequest $request)
+    {
+        $this->checkSession();
+
+        $errors = $request->validate();
+        $user_id = $this->authService->getCurrentUser()->getId();
+
+        if (empty($errors)) {
+            $product_id = $request->getProductId();
+            $amount = $request->getAmount();
+
+            $this->productService->addProduct($product_id,$user_id, $amount);
+            $totalAmount = UserProduct::getAmountByUserId($user_id);
+            $response = ['success' => true, 'totalAmount' => $totalAmount->getTotalAmount()];
+            echo json_encode($response);
+            exit;
+
+
+        }
+        header("Location: /catalog");
+    }
+    public function deleteProducts(BasketRequest $request)
+    {
+        $this->checkSession();
+        $errors = $request->validate();
+        $user_id = $this->authService->getCurrentUser()->getId();
+
+        if (empty($errors)) {
+            $product_id = $request->getProductId();
+            $amount = $request->getAmount();
+            UserProduct::deleteProduct($user_id, $product_id, $amount);
+            $totalAmount = UserProduct::getAmountByUserId($user_id);
+            $response = ['success' => true, 'totalAmount' => $totalAmount->getTotalAmount()];
+            echo json_encode($response);
+            exit;
+        }
+        header("Location: /catalog");
     }
 
 
@@ -70,6 +101,7 @@ class BasketController
         $total = $this->productService->getTotal($products);
         $delivery = $this->productService->getDelivery($total);
         $subtotal = $this->productService->getSubtotal($delivery, $total);
+
 
 
             //$userProducts = $this->productModel->getByUserIdDataBasket($user_id);

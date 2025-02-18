@@ -14,21 +14,11 @@ use mysql_xdevapi\Exception;
 
 class OrderService
 {
-    private UserProduct $userProductModel;
-    private Product $productModel;
-    private UserAddress $userAddressModel;
-    private Order $orderModel;
-    private OrderProduct $orderProductModel;
     private BasketProductService $productService;
 
-    public function __construct()
+    public function __construct(BasketProductService $productService)
     {
-        $this->productModel = new Product();
-        $this->userProductModel = new UserProduct();
-        $this->userAddressModel = new UserAddress();
-        $this->orderModel = new Order();
-        $this->orderProductModel = new OrderProduct();
-        $this->productService = new BasketProductService();
+        $this->productService = $productService;
     }
     public function create(CreateOrderDTO $orderDTO)
     {
@@ -37,14 +27,14 @@ class OrderService
          try {
 
 
-             $this->userAddressModel->createUserAddress(
+             UserAddress::createUserAddress(
                  $orderDTO->getUserId(),
                  $orderDTO->getCountry(),
                  $orderDTO->getCity(),
                  $orderDTO->getStreet(),
                  $orderDTO->getBuilding()
              );
-             $address = $this->userAddressModel->getById($orderDTO->getUserId());
+             $address = UserAddress::getById($orderDTO->getUserId());
              $address_id = $address->getId();
 
              $products = $this->productService->getUserProduct($orderDTO->getUserId());
@@ -53,20 +43,20 @@ class OrderService
              $subtotal = $this->productService->getSubtotal($delivery, $total);
 
 
-             $this->orderModel->createOrder($orderDTO->getUserId(), $address_id, $orderDTO->getNumber(), $total);
+             Order::createOrder($orderDTO->getUserId(), $address_id, $orderDTO->getNumber(), $total);
              //throw new Exception();
 
 
-             $userOrder = $this->orderModel->getOneByUserId($orderDTO->getUserId());
+             $userOrder = Order::getOneByUserId($orderDTO->getUserId());
 
-             $userProducts = $this->userProductModel->getByUserId($orderDTO->getUserId());
+             $userProducts = UserProduct::getByUserId($orderDTO->getUserId());
 
              $productIds = [];
              foreach ($userProducts as $userProduct) {
                  $productIds[] = $userProduct->getProductId();
              }
 
-             $products = $this->productModel->getAllByIds($productIds);
+             $products = Product::getAllByIds($productIds);
 
              foreach ($products as $product) {
                  foreach ($userProducts as &$userProduct) {
@@ -83,10 +73,10 @@ class OrderService
                  $product_id = $userProduct->getProductId();
                  $amount = $userProduct->getAmount();
                  $price = $userProduct->getPrice();
-                 $this->orderProductModel->createOrderProduct($order_id, $product_id, $amount, $price);
+                 OrderProduct::createOrderProduct($order_id, $product_id, $amount, $price);
              }
 
-             $this->userProductModel->deleteAllByUserId($orderDTO->getUserId());
+             UserProduct::deleteAllByUserId($orderDTO->getUserId());
          } catch (\PDOException $exception) {
              $pdo->rollBack();
 

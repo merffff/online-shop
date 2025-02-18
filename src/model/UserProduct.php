@@ -8,6 +8,7 @@ class UserProduct extends Model
     private int $product_id;
     private int $amount;
     private float $price;
+    private ?int $totalAmount = null;
 
 
 
@@ -49,6 +50,38 @@ class UserProduct extends Model
         $stmt = self::getPdo()->prepare("DELETE FROM user_products WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $user_id]);
     }
+
+    public static function deleteProduct(int $user_id, int $product_id, int $amount)
+    {
+        $stmt = self::getPdo()->prepare("SELECT amount FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
+        $product = $stmt->fetch();
+        if ($product && $product['amount'] >= $amount) {
+            $newAmount = $product['amount'] - $amount;
+            if ($newAmount > 0) {
+                $stmt = self::getPdo()->prepare("UPDATE user_products SET amount = :amount WHERE user_id = :user_id AND product_id = :product_id");
+                $stmt->execute(['amount' => $newAmount, 'user_id' => $user_id, 'product_id' => $product_id]);
+            } else {
+                $stmt = self::getPdo()->prepare("DELETE FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
+                $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
+            }
+        }
+    }
+
+    public static function getAmountByUserId(int $userId): ?self
+    {
+        $stmt = self::getPdo()->prepare("SELECT SUM(amount) AS total_amount FROM user_products  WHERE user_id = :user_id");
+        $stmt->execute(['user_id' => $userId]);
+        $data = $stmt->fetch();
+        if($data === false){
+            return null;
+        }
+        $obj = new UserProduct();
+        $obj->totalAmount = $data['total_amount'];
+        return $obj;
+    }
+
+
 
     private static function hydrateOne(array|bool $data): self|false
     {
@@ -140,6 +173,18 @@ class UserProduct extends Model
     {
         $this->price = $price;
     }
+
+    public function getTotalAmount(): ?int
+    {
+        return $this->totalAmount;
+    }
+
+    public function setTotalAmount(int $totalAmount): UserProduct
+    {
+        $this->totalAmount = $totalAmount;
+        return $this;
+    }
+
 
 
 

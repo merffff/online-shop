@@ -3,26 +3,21 @@
 namespace Core;
 
 
-use Controller\BasketController;
-use Controller\OrderController;
-use Controller\ProductController;
-use Controller\UserController;
-use Request\BasketRequest;
-use Request\LoginRequest;
-use Request\OrderRequest;
-use Request\RegistrateRequest;
-use Request\Request;
-use Service\LogerService;
+use Service\Logger\LoggerFileService;
+use Service\Logger\LoggerServiceInterface;
 
 class App
 {
-    private LogerService $logerService;
+    private LoggerServiceInterface $loggerService;
+    private Container $container;
 
     private array $routes = [];
 
-    public function __construct()
+    public function __construct(LoggerServiceInterface $loggerService, Container $container)
     {
-        $this->logerService = new LogerService();
+        $this->loggerService = $loggerService;
+        $this->container = $container;
+
     }
     public function run(): void
     {
@@ -31,47 +26,32 @@ class App
         $requestMethod = $_SERVER ['REQUEST_METHOD'];
 
         if (array_key_exists($requestUri, $this->routes)){
-            if (array_key_exists($requestMethod, $this->routes[$requestUri])){
-                foreach ($this->routes[$requestUri][$requestMethod] as $key =>$methodRoute){
-                    if ($key === 'class') {
-                        $obj = new $methodRoute();
-                    } elseif ($key === 'method') {
-                        if ($requestMethod === 'POST') {
-                            $requestClass = $this->routes[$requestUri][$requestMethod]['request'];
-                            $request = new $requestClass($requestUri, $requestMethod, $_POST);
-                            try {
-                                $obj->$methodRoute($request);
-                            } catch (\Throwable $exception) {
-                                $this->logerService->record($exception);
-                                http_response_code(500);
-                                require_once "./../view/500.php";
-                            }
+            if (array_key_exists($requestMethod, $this->routes[$requestUri])) {
+                $class = $this->routes[$requestUri][$requestMethod]['class'];
+                $object = $this->container->get($class);
+                $method = $this->routes[$requestUri][$requestMethod]['method'];
+                $requestClass = $this->routes[$requestUri][$requestMethod]['request'];
+                if (!empty($requestClass)) {
+                        $request = new $requestClass($requestUri, $requestMethod, $_POST);
 
-                        }else {
-                            try {
-                                $obj->$methodRoute();
-                            } catch (\Throwable $exception) {
-                                $this->logerService->record($exception);
-
-                                http_response_code(500);
-                                require_once "./../view/500.php";
-                            }
-                        }
-
-
-//                        if ($requestUri === '/registration') {
-//                            $request = new RegistrateRequest($requestUri,$requestMethod, $_POST);
-//                        } elseif ($requestUri === '/login') {
-//                            $request = new LoginRequest($requestUri,$requestMethod,$_POST);
-//                        }elseif ($requestUri === '/add-product') {
-//                            $request = new BasketRequest($requestUri,$requestMethod,$_POST);
-//                        }elseif ($requestUri === '/order') {
-//                            $request = new OrderRequest($requestUri,$requestMethod,$_POST);
-//                        }
-
+                    try {
+                        $object->$method($request);
+                    } catch (\Throwable $exception) {
+                        $this->loggerService->error($exception);
+                        http_response_code(500);
+                        require_once "./../view/500.php";
+                    }
+                } else {
+                    try{
+                        $object->$method();
+                    } catch (\Throwable $exception) {
+                        $this->loggerService->error($exception);
+                        http_response_code(500);
+                        require_once "./../view/500.php";
                     }
                 }
-            }else {
+
+            } else {
                 echo "$requestMethod не поддерживается адресом $requestUri";
             }
         } else {
@@ -93,18 +73,19 @@ class App
         }
     }
 
-    public function addGetRoute(string $uriName, string $className, string $method)
+    public function addGetRoute(string $uriName, string $className, string $method, string $requestClass = null): void
     {
         if(!isset($this->routes[$uriName]['GET'])) {
             $this->routes[$uriName]['GET']['class'] = $className;
             $this->routes[$uriName]['GET']['method'] = $method;
+            $this->routes[$uriName]['GET']['request'] = $requestClass;
         } else {
             echo "'GET' уже зарегистрирован для $uriName" . "<br>";
         }
 
     }
 
-    public function addPostRoute(string $uriName, string $className, string $method, string $requestClass)
+    public function addPostRoute(string $uriName, string $className, string $method, string $requestClass): void
     {
         if(!isset($this->routes[$uriName]['POST'])) {
             $this->routes[$uriName]['POST']['class'] = $className;

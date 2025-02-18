@@ -8,3 +8,343 @@ Service\BasketProductService::getUserProduct(): Return value must be of type arr
 Строка: 58
 Время: 2025-01-28 15:59:02
 
+Ошибка: Call to a member function getId() on null
+Файл: /var/www/html/src/Controller/BasketController.php
+Строка: 59
+Время: 2025-02-06 15:24:21
+
+Ошибка: Call to a member function getId() on null
+Файл: /var/www/html/src/Controller/BasketController.php
+Строка: 59
+Время: 2025-02-06 15:50:26
+
+Ошибка: Call to a member function getId() on null
+Файл: /var/www/html/src/Controller/BasketController.php
+Строка: 61
+Время: 2025-02-06 15:53:21
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 35
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-09 13:19:50
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 35
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-09 13:23:16
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 35
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-09 13:44:18
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 35
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-09 13:44:27
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 36
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-09 13:52:45
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 36
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-09 13:52:53
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 36
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-09 13:55:07
+
+Ошибка: Call to undefined method Controller\ProductController::handleProduct()
+Файл: /var/www/html/src/Core/App.php
+Строка: 37
+Время: 2025-02-09 14:03:13
+
+Ошибка: Too few arguments to function Controller\ProductController::getProduct(), 0 passed in /var/www/html/src/Core/App.php on line 45 and exactly 1 expected
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 32
+Время: 2025-02-09 14:08:50
+
+Ошибка: Too few arguments to function Controller\ProductController::getProduct(), 0 passed in /var/www/html/src/Core/App.php on line 45 and exactly 1 expected
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 32
+Время: 2025-02-09 14:29:20
+
+Ошибка: Call to a member function getId() on null
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 72
+Время: 2025-02-09 15:08:11
+
+Ошибка: Call to a member function getId() on null
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 72
+Время: 2025-02-09 15:12:05
+
+Ошибка: model\OrderProduct::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 75
+Файл: /var/www/html/src/model/OrderProduct.php
+Строка: 41
+Время: 2025-02-09 15:13:30
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 36
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-11 14:21:17
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 36
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-11 14:21:21
+
+Ошибка: model\OrderProduct::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 75
+Файл: /var/www/html/src/model/OrderProduct.php
+Строка: 41
+Время: 2025-02-11 14:21:42
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 36
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-11 14:23:09
+
+Ошибка: model\OrderProduct::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 75
+Файл: /var/www/html/src/model/OrderProduct.php
+Строка: 41
+Время: 2025-02-11 14:30:42
+
+Ошибка: model\OrderProduct::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 75
+Файл: /var/www/html/src/model/OrderProduct.php
+Строка: 41
+Время: 2025-02-11 14:44:28
+
+Ошибка: model\OrderProduct::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 75
+Файл: /var/www/html/src/model/OrderProduct.php
+Строка: 41
+Время: 2025-02-11 14:45:02
+
+Ошибка: model\OrderProduct::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 75
+Файл: /var/www/html/src/model/OrderProduct.php
+Строка: 41
+Время: 2025-02-11 14:45:10
+
+Ошибка: model\OrderProduct::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 76
+Файл: /var/www/html/src/model/OrderProduct.php
+Строка: 41
+Время: 2025-02-11 14:46:46
+
+Ошибка: Controller\ProductController::getProduct(): Argument #1 ($request) must be of type Request\ProductRequest, Request\ReviewRequest given, called in /var/www/html/src/Core/App.php on line 37
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 32
+Время: 2025-02-11 14:48:42
+
+Ошибка: Controller\ProductController::getProduct(): Argument #1 ($request) must be of type Request\ProductRequest, Request\ReviewRequest given, called in /var/www/html/src/Core/App.php on line 37
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 32
+Время: 2025-02-11 14:48:57
+
+Ошибка: Controller\ProductController::getProduct(): Argument #1 ($request) must be of type Request\ProductRequest, Request\ReviewRequest given, called in /var/www/html/src/Core/App.php on line 37
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 32
+Время: 2025-02-11 14:50:06
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 36
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-11 15:01:26
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 36
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-11 15:09:58
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 37
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-11 15:11:23
+
+Ошибка: Call to a member function getRate() on array
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 48
+Время: 2025-02-11 15:19:22
+
+Ошибка: Division by zero
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 56
+Время: 2025-02-11 15:36:29
+
+Ошибка: Division by zero
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 59
+Время: 2025-02-11 15:38:41
+
+Ошибка: Division by zero
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 58
+Время: 2025-02-11 15:39:09
+
+Ошибка: Division by zero
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 58
+Время: 2025-02-11 15:39:13
+
+Ошибка: Division by zero
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 58
+Время: 2025-02-11 15:39:19
+
+Ошибка: model\Order::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 85
+Файл: /var/www/html/src/model/Order.php
+Строка: 57
+Время: 2025-02-12 14:14:45
+
+Ошибка: model\Order::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 85
+Файл: /var/www/html/src/model/Order.php
+Строка: 57
+Время: 2025-02-12 14:15:48
+
+Ошибка: model\Order::getByUserIdAndProductId(): Argument #2 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 85
+Файл: /var/www/html/src/model/Order.php
+Строка: 57
+Время: 2025-02-12 14:16:17
+
+Ошибка: Controller\ProductController::getProduct(): Argument #1 ($request) must be of type Request\ProductRequest, null given, called in /var/www/html/src/Core/App.php on line 42
+Файл: /var/www/html/src/Controller/ProductController.php
+Строка: 33
+Время: 2025-02-12 14:53:09
+
+Ошибка: model\Product::getById(): Argument #1 ($product_id) must be of type int, null given, called in /var/www/html/src/Controller/ProductController.php on line 37
+Файл: /var/www/html/src/model/Product.php
+Строка: 25
+Время: 2025-02-13 13:03:05
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 13:10:35
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 13:18:21
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 13:21:27
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 13:21:39
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 13:29:08
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 13:29:18
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 13:52:49
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 14:13:28
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 14:15:43
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 14:27:18
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 14:28:03
+
+Ошибка: Cannot assign null to property model\Order::$id of type int
+Файл: /var/www/html/src/model/Order.php
+Строка: 72
+Время: 2025-02-13 14:28:43
+
+Ошибка: model\Order::getByUserIdAndProductId(): Return value must be of type array|false, model\Order returned
+Файл: /var/www/html/src/model/Order.php
+Строка: 62
+Время: 2025-02-13 14:34:14
+
+Ошибка: model\User::getByEmail(): Return value must be of type ?model\User, false returned
+Файл: /var/www/html/src/model/User.php
+Строка: 36
+Время: 2025-02-13 14:37:00
+
+Ошибка: syntax error, unexpected variable "$averageRate", expecting "," or ";"
+Файл: /var/www/html/src/view/Product.php
+Строка: 59
+Время: 2025-02-13 14:51:23
+
+Ошибка: syntax error, unexpected variable "$averageRate", expecting "," or ";"
+Файл: /var/www/html/src/view/Product.php
+Строка: 59
+Время: 2025-02-13 14:51:26
+
+Ошибка: syntax error, unexpected variable "$averageRate", expecting "," or ";"
+Файл: /var/www/html/src/view/Product.php
+Строка: 59
+Время: 2025-02-13 14:51:31
+
+Ошибка: syntax error, unexpected variable "$averageRate", expecting "," or ";"
+Файл: /var/www/html/src/view/Product.php
+Строка: 59
+Время: 2025-02-13 14:51:46
+
+Ошибка: syntax error, unexpected variable "$averageRate", expecting "," or ";"
+Файл: /var/www/html/src/view/Product.php
+Строка: 59
+Время: 2025-02-13 14:51:49
+
+Ошибка: syntax error, unexpected variable "$averageRate", expecting "," or ";"
+Файл: /var/www/html/src/view/Product.php
+Строка: 59
+Время: 2025-02-13 14:51:52
+
+Ошибка: Call to a member function getId() on null
+Файл: /var/www/html/src/Controller/BasketController.php
+Строка: 59
+Время: 2025-02-13 15:48:22
+
+Ошибка: Call to a member function getId() on null
+Файл: /var/www/html/src/Controller/BasketController.php
+Строка: 88
+Время: 2025-02-18 13:54:20
+
+Ошибка: Object of class model\UserProduct could not be converted to string
+Файл: /var/www/html/src/view/catalog.php
+Строка: 52
+Время: 2025-02-18 15:47:45
+
+Ошибка: Object of class model\UserProduct could not be converted to string
+Файл: /var/www/html/src/view/catalog.php
+Строка: 52
+Время: 2025-02-18 15:48:16
+
+Ошибка: Object of class model\UserProduct could not be converted to string
+Файл: /var/www/html/src/view/catalog.php
+Строка: 52
+Время: 2025-02-18 15:48:50
+
+Ошибка: Object of class model\UserProduct could not be converted to string
+Файл: /var/www/html/src/view/catalog.php
+Строка: 52
+Время: 2025-02-18 15:49:06
+
