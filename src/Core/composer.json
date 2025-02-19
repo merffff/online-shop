@@ -1,0 +1,15 @@
+{
+    "name": "merffff/core",
+    "autoload": {
+        "psr-4": {
+            "Merffff\\Core\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Irina Baldanova",
+            "email": "idb6@tpu.ru"
+        }
+    ],
+    "require": {}
+}
